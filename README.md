@@ -31,6 +31,8 @@ If there is related infringement or violation of related regulations, please con
 
 [STEAM教學網 - Python 教學](https://steam.oxxostudio.tw/category/python/index.html)
 
+[OpenCV-Python Tutorials](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
+
 <h2 id="0.2">技術網站</h2>
 
 [如何在python中执行另一个py文件](https://cloud.tencent.com/developer/article/1738484)
