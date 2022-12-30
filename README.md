@@ -17,6 +17,7 @@ If there is related infringement or violation of related regulations, please con
   - [tkinter UI](#2.3)
   - [Uart](#2.4)
   - [Excel](#2.5)
+  - [OpenCV](#2.6)
 
 
 <h1 id="0">Note</h1>
@@ -32,6 +33,10 @@ If there is related infringement or violation of related regulations, please con
 [STEAM教學網 - Python 教學](https://steam.oxxostudio.tw/category/python/index.html)
 
 [OpenCV-Python Tutorials](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
+
+[STEAM教學網 - OpenCV 教學](https://steam.oxxostudio.tw/category/python/ai/opencv-index.html)
+
+[OpenCV 函式庫](https://steam.oxxostudio.tw/category/python/ai/opencv.html)
 
 <h2 id="0.2">技術網站</h2>
 
@@ -226,4 +231,19 @@ print(d2)  #陽明山遊客中心
 
 - [get_data_from_excel.py](./code/excel/get_data_from_excel.py)
 
+<h2 id="2.">OpenCV</h2>
+
+全白或全黑的底
+
+```Python
+#shape = (32, 32, 3)        # 3-channel 8bit
+shape = (32, 32)            # 1-channel 8bit
+pt_img = np.zeros(shape, np.uint8)
+pt_img.fill(255)            # Set White or Black
+```
+
+cv.applyColorMap(src, colormap)
+
+- `cv.applyColorMap(pt_img, cv.COLORMAP_RAINBOW) `
+- [偽彩色圖像處理](https://blog.csdn.net/youcans/article/details/125298385)
 
