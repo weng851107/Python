@@ -6,33 +6,9 @@ colorblack = (0, 0, 0)
 thickness = 2
 circleradius = 272
 circlecenter = (circleradius, circleradius)
-circlearclinedisdiff = circleradius/10
-
-'''
-https://blog.csdn.net/huanglu_thu13/article/details/52332695
-'''
-def get_red(img):
-    redImg = img[:,:,2]
-    return redImg
-
-def get_green(img):
-    greenImg = img[:,:,1]
-    return greenImg
-
-def get_blue(img):
-    blueImg = img[:,:,0]
-    return blueImg
-
-def GenerateWhiteBG():
-    #shape = (circleradius, 2*circleradius, 3)      # y, x, RGB
-    shape = (circleradius, 2*circleradius)          # 1-channel 8bit
-    origin_img = np.zeros(shape, np.uint8)
-    origin_img.fill(255)
-
-    cv.imshow('origin_img', origin_img)
-    cv.imwrite('bg_origin_img.bmp', origin_img)    # 存檔儲存為 png
-
-    cv.waitKey(0)
+circlearcnumber = 10
+circlearclinedisdiff = circleradius/circlearcnumber
+circlelinethetadiff = 15                                    #circlelinethetadiff is a factor of 180
 
 def GeneratePolarCoordinate():
     '''
@@ -48,30 +24,10 @@ def GeneratePolarCoordinate():
     cv.circle(origin_img, circlecenter, 5, colorblack, -1)
 
     '''
-    partition 300-radius as 10 kinds of distance
+    partition radius as 'circlearcnumber' kinds of distance
     '''
-    arclineindex = 1
-    cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
-    arclineindex += 1
-    cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
-    arclineindex += 1
-    cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
-    arclineindex += 1
-    cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
-    arclineindex += 1
-    cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
-    arclineindex += 1
-    cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
-    arclineindex += 1
-    cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
-    arclineindex += 1
-    cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
-    arclineindex += 1
-    cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
-    arclineindex += 1
-    cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
-    arclineindex += 1
-
+    for arclineindex in range(1, circlearcnumber+1):
+        cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
 
     '''
     base: polarimage origin frame
@@ -82,45 +38,10 @@ def GeneratePolarCoordinate():
     x'' = x + x'
     y'' = y + y'
     '''
-    linetheta = 0
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
-    linetheta += 15
-    linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-    cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
+    for linetheta in range(0, 181, circlelinethetadiff):
+        linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
+        cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
+
 
     '''
     origin_img = cv.cvtColor(origin_img, cv.COLOR_BGR2BGRA)         # 因為是 jpg，要轉換顏色為 BGRA
@@ -137,36 +58,36 @@ def GeneratePolarCoordinate():
     '''
 
     cv.imshow('origin_img', origin_img)
-    cv.imwrite('origin_img.bmp', origin_img)    # 存檔儲存為 png
-
+    cv.imwrite('origin_img.bmp', origin_img)
     cv.waitKey(0)
-
 
 def ImageMatting():
     origin_img = cv.imread('origin_img.bmp', cv.IMREAD_UNCHANGED)
-    mask_img = cv.imread('bg_origin_img.bmp')                    # 遮罩圖片
-    mask = cv.cvtColor(mask_img, cv.COLOR_BGR2GRAY)    # 轉換成灰階模式
-    output = cv.bitwise_and(origin_img, origin_img, mask=mask)  # 加入 mask 參數
+    mask_img = cv.imread('bg_origin_img.bmp')                       # 遮罩圖片
+    mask = cv.cvtColor(mask_img, cv.COLOR_BGR2GRAY)                 # 轉換成灰階模式
+    output = cv.bitwise_and(origin_img, origin_img, mask=mask)      # 加入 mask 參數
     cv.imshow('output', output)
-    cv.imwrite('output_img.bmp', output)    # 存檔儲存為 png
+    cv.imwrite('output_img.bmp', output)
     cv.waitKey(0)
 
+'''
+It still need to be processed with Paint, restore as 256(8bits)-bmp
+'''
 def GenerateRedPt():
-    shape = (32, 32, 1)          # 1-channel 8bit
+    shape = (32, 32, 3)          # 3-channel 8bit
     pt_img = np.zeros(shape, np.uint8)
     pt_img.fill(255)
 
-    cv.circle(pt_img, (16, 16), 16, 0, -1)
+    cv.circle(pt_img, (16, 16), 8, (0, 0, 255), -1)
 
-    pt_img = cv.applyColorMap(pt_img, cv.COLORMAP_AUTUMN) 
+    #pt_img = cv.applyColorMap(pt_img, cv.COLORMAP_AUTUMN) 
 
     cv.imshow('pt_img', pt_img)
-    cv.imwrite('pt_img.bmp', pt_img)    # 存檔儲存為 png
+    cv.imwrite('pt_img.bmp', pt_img)
     cv.waitKey(0)
 
 
 if __name__ == "__main__":
-    GenerateRedPt()
-    #GeneratePolarCoordinate()
-    #GenerateWhiteBG()
+    #GenerateRedPt()
+    GeneratePolarCoordinate()
     #ImageMatting()
