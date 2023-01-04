@@ -1,3 +1,12 @@
+"""
+    Date: 2022/12/08
+    Writer: Antony_Weng
+    Application: Plot the Dynamic Radar Pt. in PC(windows).
+    Note: 
+        1. main thread run Animation.
+        2. sub-thread run collect_data_telnet()
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation 

@@ -11,6 +11,7 @@ If there is related infringement or violation of related regulations, please con
   - [學習資源](#0.1)
   - [技術網站](#0.2)
   - [如何在linux下執行python程式](#0.3)
+  - [Ubuntu修改默認Python版本](#0.4)
 - [實際操作](#2)
   - [Telnet](#2.1)
   - [matplotlib極座標應用](#2.2)
@@ -74,6 +75,58 @@ Parser for command line options
 2. 在檔案的頭部（第一行）寫上 `#!/usr/bin/python2.7`，這個地方使用python的絕對路徑，就是上面用 `which python` 查詢來的結果。
 
 然後在外面就可以使用./***.py執行了。
+
+<h2 id="0.4">Ubuntu修改默認Python版本</h2>
+
+查看系統有的Python版本
+
+```bash
+ls /usr/bin/python*
+```
+
+查看系統默認的Python版本
+
+```bash
+python --version
+```
+
+用戶級修改
+
+- 開啟用戶`~/.bashrc`
+
+    ```bash
+    vim ~/.bashrc
+    ```
+
+- 新增別名來修改默認Python版本
+
+    ```bash
+    alias python='/usr/bin/python3.7'
+    ```
+
+- 重新登錄或加載.bashrc文件
+
+    ```bash
+    source ~/.bashrc
+    ```
+
+在具體的某個Python文件中修改
+
+- 在第一行處修改如下：將 `#!/usr/bin/python` 修改為 `#!/usr/bin/python2 `表示採用Python2來對該文件進行編譯，改為python3亦然
+
+軟連結
+
+```bash
+ls /usr/bin/python*
+
+rm /usr/bin/python
+
+ln -s /usr/bin/python3.7 /usr/bin/python
+```
+
+採用指令update-alternatives切換
+
+- https://blog.csdn.net/Hiking_Yu/article/details/104373221
 
 <h1 id="2">實際操作</h1>
 

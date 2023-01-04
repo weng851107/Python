@@ -1,3 +1,12 @@
+"""
+    Date: 2022/12/08
+    Writer: Antony_Weng
+    Application: Radar UI in PC(windows).
+    Note: 
+        1. Revise the parameters in APP1 mode.
+        2. Plot the Dynamic Radar Pt.
+"""
+
 from cProfile import label
 import tkinter as tk
 from tkinter import * 
