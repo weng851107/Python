@@ -1,3 +1,11 @@
+'''
+    Date        : 2023/01/05
+    Author      : Antony Weng
+    Application : Generate the canvas for polor coordinate and object point with openCV
+    Note        : 1. GeneratePolarCoordinate() is used to get the radar_polar_img.bmp
+                  2. GenerateRedPt() is used to get the radar_pt_img.bmp
+'''
+
 import cv2 as cv
 import numpy as np
 import math
@@ -18,16 +26,16 @@ def GeneratePolarCoordinate():
     '''
     #shape = (circleradius, 2*circleradius, 3)      # y, x, RGB
     shape = (circleradius, 2*circleradius)          # 1-channel 8bit
-    origin_img = np.zeros(shape, np.uint8)
-    origin_img.fill(255)
+    radar_polar_img = np.zeros(shape, np.uint8)
+    radar_polar_img.fill(255)
 
-    cv.circle(origin_img, circlecenter, 5, colorblack, -1)
+    cv.circle(radar_polar_img, circlecenter, 5, colorblack, -1)
 
     '''
     partition radius as 'circlearcnumber' kinds of distance
     '''
     for arclineindex in range(1, circlearcnumber+1):
-        cv.circle(origin_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
+        cv.circle(radar_polar_img, circlecenter, int(arclineindex*circlearclinedisdiff), colorblack, thickness)
 
     '''
     base: polarimage origin frame
@@ -40,25 +48,25 @@ def GeneratePolarCoordinate():
     '''
     for linetheta in range(0, 181, circlelinethetadiff):
         linept2 = (int(circlecenter[0] + circleradius*math.cos(math.radians(linetheta))), int(circlecenter[1] - circleradius*math.sin(math.radians(linetheta))))
-        cv.line(origin_img, circlecenter, linept2, colorblack, thickness)
+        cv.line(radar_polar_img, circlecenter, linept2, colorblack, thickness)
 
 
     '''
-    origin_img = cv.cvtColor(origin_img, cv.COLOR_BGR2BGRA)         # 因為是 jpg，要轉換顏色為 BGRA
-    gray_img = cv.cvtColor(origin_img, cv.COLOR_BGR2GRAY)           # 新增 gray 變數為轉換成灰階的圖片
+    radar_polar_img = cv.cvtColor(radar_polar_img, cv.COLOR_BGR2BGRA)         # 因為是 jpg，要轉換顏色為 BGRA
+    gray_img = cv.cvtColor(radar_polar_img, cv.COLOR_BGR2GRAY)           # 新增 gray 變數為轉換成灰階的圖片
 
     # 依序取出圖片中每個像素
     for x in range(2*circleradius):
         for y in range(circleradius):
             if gray_img[y, x]>200:
-                origin_img[y, x, 3] = 255 - gray_img[y, x]
+                radar_polar_img[y, x, 3] = 255 - gray_img[y, x]
                 # 如果該像素的灰階度大於 200，調整該像素的透明度
                 # 使用 255 - gray[y, x] 可以將一些邊緣的像素變成半透明，避免太過鋸齒的邊緣
     cv.imshow('gray_img', gray_img)
     '''
 
-    cv.imshow('origin_img', origin_img)
-    cv.imwrite('origin_img.bmp', origin_img)
+    cv.imshow('radar_polar_img', radar_polar_img)
+    cv.imwrite('radar_polar_img.bmp', radar_polar_img)
     cv.waitKey(0)
 
 def ImageMatting():
@@ -75,15 +83,15 @@ It still need to be processed with Paint, restore as 256(8bits)-bmp
 '''
 def GenerateRedPt():
     shape = (32, 32, 3)          # 3-channel 8bit
-    pt_img = np.zeros(shape, np.uint8)
-    pt_img.fill(255)
+    radar_pt_img = np.zeros(shape, np.uint8)
+    radar_pt_img.fill(255)
 
-    cv.circle(pt_img, (16, 16), 8, (0, 0, 255), -1)
+    cv.circle(radar_pt_img, (16, 16), 8, (0, 0, 255), -1)
 
-    #pt_img = cv.applyColorMap(pt_img, cv.COLORMAP_AUTUMN) 
+    #radar_pt_img = cv.applyColorMap(radar_pt_img, cv.COLORMAP_AUTUMN) 
 
-    cv.imshow('pt_img', pt_img)
-    cv.imwrite('pt_img.bmp', pt_img)
+    cv.imshow('radar_pt_img', radar_pt_img)
+    cv.imwrite('radar_pt_img.bmp', radar_pt_img)
     cv.waitKey(0)
 
 
