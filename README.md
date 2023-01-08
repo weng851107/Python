@@ -29,6 +29,10 @@ If there is related infringement or violation of related regulations, please con
   - [Numbers](#4.4)
   - [Casting](#4.5)
   - [Strings](#4.6)
+  - [Booleans](#4.7)
+  - [Operators](#4.8)
+  - [Collections (Arrays)](#4.9)
+  - [Lists](#4.10)
 - [交叉編譯ARM架構Python](#5)
 
 
@@ -1065,6 +1069,489 @@ I want to pay 49.95 dollars for 3 pieces of item 567.
 ### String Methods API
 
 https://www.w3schools.com/python/python_strings_methods.asp
+
+
+<h2 id="4.7">Booleans</h2>
+
+In programming you often need to know if an expression is `True` or `False`.
+
+You can evaluate any expression in Python, and get one of two answers, `True` or `False`.
+
+- When you compare two values, the expression is evaluated and Python returns the Boolean answer:
+
+    ```Python
+    print(10 > 9)
+    print(10 == 9)
+    print(10 < 9)
+    '''
+    True
+    False
+    False
+    '''
+    ```
+
+- The `bool()` function allows you to evaluate any value, and give you True or False in return
+
+    ```Python
+    print(bool("Hello"))
+    print(bool(15))
+    '''
+    True
+    True
+    '''
+    ```
+
+Most Values are `True`
+
+- Any string is `True`, except empty strings.
+- Any number is `True`, except 0.
+- Any list, tuple, set, and dictionary are `True`, except empty ones.
+
+    ```Python
+    bool("abc")
+    bool(123)
+    bool(["apple", "cherry", "banana"])
+    ```
+
+<h2 id="4.8">Operators</h2>
+
+Arithmetic Operators
+
+- Arithmetic operators are used with numeric values to perform common mathematical operations:
+
+    ![tutorial_img03](./Tutorial/image/tutorial_img03.PNG)
+
+Comparison Operators
+
+- Comparison operators are used to compare two values:
+
+    ![tutorial_img04](./Tutorial/image/tutorial_img04.PNG)
+
+Logical Operators
+
+- Logical operators are used to combine conditional statements:
+
+    ![tutorial_img05](./Tutorial/image/tutorial_img05.PNG)
+
+Identity Operators
+
+- Identity operators are used to compare the objects, not if they are equal, but if they are actually the same object, with the same memory location:
+
+    ![tutorial_img06](./Tutorial/image/tutorial_img06.PNG)
+
+Membership Operators
+
+- Membership operators are used to test if a sequence is presented in an object:
+
+    ![tutorial_img07](./Tutorial/image/tutorial_img07.PNG)
+
+Bitwise Operators
+
+- Bitwise operators are used to compare (binary) numbers:
+
+    ![tutorial_img08](./Tutorial/image/tutorial_img08.PNG)
+
+<h2 id="4.9">Collections (Arrays)</h2>
+
+- **List** is a collection which is ordered and changeable. Allows duplicate members.
+- **Tuple** is a collection which is ordered and unchangeable. Allows duplicate members.
+- **Set** is a collection which is unordered, unchangeable*, and unindexed. No duplicate members.
+- **Dictionary** is a collection which is ordered and changeable. No duplicate members.
+
+<h2 id="4.10">Lists</h2>
+
+Lists are one of 4 built-in data types in Python used to store collections of data
+
+- Lists are used to store multiple items in a single variable.
+- Lists are created using square brackets
+
+    ```Python
+    thislist = ["apple", "banana", "cherry"]
+    print(thislist)
+    '''
+    ['apple', 'banana', 'cherry']
+    '''
+    ```
+
+List items are ordered, changeable, and allow duplicate values.
+
+- The items have a defined order, and that order will not change.
+- If you add new items to a list, the new items will be placed at the end of the list.
+- We can change, add, and remove items in a list after it has been created.
+
+List items are indexed, the first item has index [0], the second item has index [1] etc.
+
+- Since lists are indexed, lists can have items with the same value:
+
+    ```Python
+    thislist = ["apple", "banana", "cherry", "apple", "cherry"]
+    print(thislist)
+    ```
+
+lists are defined as objects with the data type 'list':
+
+```Python
+<class 'list'>
+```
+
+#### List Length
+
+```Python
+thislist = ["apple", "banana", "cherry"]
+print(len(thislist))
+'''
+3
+'''
+```
+
+#### List Items - Data Types
+
+List items can be of any data type:
+
+```Python
+list1 = ["apple", "banana", "cherry"]
+list2 = [1, 5, 7, 9, 3]
+list3 = [True, False, False]
+
+list4 = ["abc", 34, True, 40, "male"]
+```
+
+#### The list() Constructor
+
+Using the list() constructor to make a List:
+
+```Python
+thislist = list(("apple", "banana", "cherry")) # note the double round-brackets
+print(thislist)
+```
+
+#### Access List Items
+
+List items are indexed and you can access them by referring to the index number:
+
+- Access Items
+
+    ```Python
+    thislist = ["apple", "banana", "cherry"]
+    print(thislist[1])
+    '''
+    banana
+    '''
+    ```
+
+- Range of Indexes
+
+    ```Python
+    thislist = ["apple", "banana", "cherry", "orange", "kiwi", "melon", "mango"]
+    print(thislist[2:5])
+    '''
+    ['cherry', 'orange', 'kiwi']
+    '''
+    ```
+
+Check if Item Exists - `in`
+
+```Python
+thislist = ["apple", "banana", "cherry"]
+if "apple" in thislist:
+    print("Yes, 'apple' is in the fruits list")
+'''
+Yes, 'apple' is in the fruits list
+'''
+```
+
+#### Change List Items
+
+To change the value of a specific item, refer to the index number:
+
+- Change Item Value
+
+    ```Python
+    thislist = ["apple", "banana", "cherry"]
+    thislist[1] = "blackcurrant"
+    print(thislist)
+    '''
+    ['apple', 'blackcurrant', 'cherry']
+    '''
+    ```
+
+- Change a Range of Item Values
+
+    ```Python
+    # you insert items that equal to you replace
+    thislist = ["apple", "banana", "cherry", "orange", "kiwi", "mango"]
+    thislist[1:3] = ["blackcurrant", "watermelon"]
+    print(thislist)
+    '''
+    ['apple', 'blackcurrant', 'watermelon', 'orange', 'kiwi', 'mango']
+    '''
+
+    # you insert more items than you replace
+    thislist = ["apple", "banana", "cherry"]
+    thislist[1:2] = ["blackcurrant", "watermelon"]
+    print(thislist)
+    '''
+    ['apple', 'blackcurrant', 'watermelon', 'cherry']
+    '''
+
+    # you insert less items than you replace
+    thislist = ["apple", "banana", "cherry"]
+    thislist[1:3] = ["watermelon"]
+    print(thislist)
+    '''
+    ['apple', 'watermelon']
+    '''
+    ```
+
+#### Add List Items
+
+Append Items - `append()`
+
+- To add an item to the end of the list
+
+    ```Python
+    thislist = ["apple", "banana", "cherry"]
+    thislist.append("orange")
+    print(thislist)
+    '''
+    ['apple', 'banana', 'cherry', 'orange']
+    '''
+    ```
+
+Insert Items - `insert()`
+
+```Python
+thislist = ["apple", "banana", "cherry"]
+thislist.insert(2, "watermelon")
+print(thislist)
+'''
+['apple', 'banana', 'watermelon', 'cherry']
+'''
+```
+
+Extend List - `extend()`
+
+- To append elements from another list to the current list
+
+    ```Python
+    thislist = ["apple", "banana", "cherry"]
+    tropical = ["mango", "pineapple", "papaya"]
+    thislist.extend(tropical)
+    print(thislist)
+    '''
+    ['apple', 'banana', 'cherry', 'mango', 'pineapple', 'papaya']
+    '''
+    ```
+
+- The extend() method does not have to append lists, you can add any iterable object (tuples, sets, dictionaries etc.).
+
+    ```Python
+    thislist = ["apple", "banana", "cherry"]
+    thistuple = ("kiwi", "orange")
+    thislist.extend(thistuple)
+    print(thislist)
+    '''
+    ['apple', 'banana', 'cherry', 'kiwi', 'orange']
+    '''
+    ```
+
+#### Remove List Items
+
+Remove Specified Item - `remove()`
+
+```Python
+thislist = ["apple", "banana", "cherry"]
+thislist.remove("banana")
+print(thislist)
+'''
+['apple', 'cherry']
+'''
+```
+
+Remove Specified Index or the Last Item - `pop()`
+
+```Python
+thislist = ["apple", "banana", "cherry"]
+thislist.pop(1)
+print(thislist)
+'''
+['apple', 'cherry']
+'''
+
+thislist = ["apple", "banana", "cherry"]
+thislist.pop()
+print(thislist)
+'''
+['apple', 'banana']
+'''
+```
+
+Delete the list - `del`
+
+```Python
+thislist = ["apple", "banana", "cherry"]
+del thislist[0]
+print(thislist)
+'''
+['banana', 'cherry']
+'''
+
+thislist = ["apple", "banana", "cherry"]
+del thislist
+```
+
+Clear the List - `clear()`
+
+- The list still remains, but it has no content.
+
+    ```Python
+    thislist = ["apple", "banana", "cherry"]
+    thislist.clear()
+    print(thislist)
+    '''
+    []
+    '''
+    ```
+
+#### Loop Lists
+
+Loop Through a List
+
+```Python
+thislist = ["apple", "banana", "cherry"]
+for x in thislist:
+    print(x)
+'''
+apple
+banana
+cherry
+'''
+```
+
+Loop Through the Index Numbers - `range()` + `len()`
+
+```Python
+thislist = ["apple", "banana", "cherry"]
+for i in range(len(thislist)):
+    print(thislist[i])
+'''
+apple
+banana
+cherry
+'''
+```
+
+#### List Comprehension
+
+List comprehension offers a shorter syntax when you want to create a new list based on the values of an existing list.
+
+`newlist = [expression for item in iterable if condition == True]`
+
+```Python
+fruits = ["apple", "banana", "cherry", "kiwi", "mango"]
+newlist = [x for x in fruits if "a" in x]
+print(newlist)
+'''
+['apple', 'banana', 'mango']
+'''
+```
+
+#### Sort Lists
+
+Sort List Alphanumerically
+
+- By default the sort() method is case sensitive, resulting in all capital letters being sorted before lower case letters:
+
+```Python
+thislist = ["orange", "mango", "kiwi", "pineapple", "banana"]
+thislist.sort()
+print(thislist)
+'''
+['banana', 'kiwi', 'mango', 'orange', 'pineapple']
+'''
+
+thislist = ["banana", "Orange", "Kiwi", "cherry"]
+thislist.sort()
+print(thislist)
+'''
+['Kiwi', 'Orange', 'banana', 'cherry']
+'''
+
+thislist = [100, 50, 65, 82, 23]
+thislist.sort()
+print(thislist)
+'''
+[23, 50, 65, 82, 100]
+'''
+```
+
+Sort Descending
+
+```Python
+thislist = ["orange", "mango", "kiwi", "pineapple", "banana"]
+thislist.sort(reverse = True)
+print(thislist)
+'''
+['pineapple', 'orange', 'mango', 'kiwi', 'banana']
+'''
+
+thislist = ["banana", "Orange", "Kiwi", "cherry"]
+thislist.sort(reverse = True)
+print(thislist)
+'''
+['cherry', 'banana', 'Orange', 'Kiwi']'''
+
+thislist = [100, 50, 65, 82, 23]
+thislist.sort(reverse = True)
+print(thislist)
+'''
+[100, 82, 65, 50, 23]
+'''
+```
+
+Case Insensitive Sort
+
+```Python
+thislist = ["banana", "Orange", "Kiwi", "cherry"]
+thislist.sort(key = str.lower)
+print(thislist)
+'''
+['banana', 'cherry', 'Kiwi', 'Orange']
+'''
+```
+
+Customize Sort Function - `key = function`
+
+```Python
+# Sort the list based on how close the number is to 50
+def myfunc(n):
+    return abs(n - 50)
+
+thislist = [100, 50, 65, 82, 23]
+thislist.sort(key = myfunc)
+print(thislist)
+'''
+[50, 65, 23, 82, 100]
+'''
+```
+
+Reverse Order - `reverse()`
+
+```Python
+thislist = ["banana", "Orange", "Kiwi", "cherry"]
+thislist.reverse()
+print(thislist)
+'''
+['cherry', 'Kiwi', 'Orange', 'banana']
+'''
+```
+
+#### Copy Lists - `copy()`, `list()`
+
+You cannot copy a list simply by typing `list2 = list1`
+
+
+
 
 
 
