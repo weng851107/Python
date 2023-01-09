@@ -33,6 +33,13 @@ If there is related infringement or violation of related regulations, please con
   - [Operators](#4.8)
   - [Collections (Arrays)](#4.9)
   - [Lists](#4.10)
+  - [Tuples](#4.11)
+  - [Sets](#4.12)
+  - [Dictionaries](#4.13)
+  - [If ... Else](#4.14)
+  - [While Loops](#4.15)
+  - [For Loops](#4.16)
+  - [Functions](#4.17)
 - [交叉編譯ARM架構Python](#5)
 
 
@@ -1549,6 +1556,1402 @@ print(thislist)
 #### Copy Lists - `copy()`, `list()`
 
 You cannot copy a list simply by typing `list2 = list1`
+
+- `copy()`
+
+    ```Python
+    thislist = ["apple", "banana", "cherry"]
+    mylist = thislist.copy()
+    print(mylist)
+    '''
+    ['apple', 'banana', 'cherry']
+    '''
+    ```
+
+- `list()`
+
+    ```Python
+    thislist = ["apple", "banana", "cherry"]
+    mylist = list(thislist)
+    print(mylist)
+    '''
+    ['apple', 'banana', 'cherry']
+    '''
+    ```
+
+#### Join Lists - `+`, `append()`, `extend()`
+
+```Python
+list1 = ["a", "b", "c"]
+list2 = [1, 2, 3]
+list3 = list1 + list2
+print(list3)
+'''
+['a', 'b', 'c', 1, 2, 3]
+'''
+
+list1 = ["a", "b" , "c"]
+list2 = [1, 2, 3]
+for x in list2:
+    list1.append(x)
+print(list1)
+'''
+['a', 'b', 'c', 1, 2, 3]
+'''
+
+list1 = ["a", "b" , "c"]
+list2 = [1, 2, 3]
+list1.extend(list2)
+print(list1)
+'''
+['a', 'b', 'c', 1, 2, 3]
+'''
+```
+
+#### List index()
+
+The `index()` method returns the position at the first occurrence of the specified value.
+
+```Python
+fruits = ['apple', 'banana', 'cherry']
+x = fruits.index("cherry")
+print(x)
+'''
+2
+'''
+
+fruits = [4, 55, 64, 32, 16, 32]
+x = fruits.index(32)
+print(x)
+'''
+3
+'''
+```
+
+#### List count()
+
+The `count()` method returns the number of elements with the specified value.
+
+```Python
+fruits = ['apple', 'banana', 'cherry']
+x = fruits.count("cherry")
+print(x)
+'''
+1
+'''
+
+points = [1, 4, 2, 9, 7, 8, 9, 3, 1]
+x = points.count(9)
+print(x)
+'''
+2
+'''
+```
+
+<h2 id="4.11">Tuples</h2>
+
+A tuple is a collection which is ordered and **unchangeable**, and allow duplicate values.
+
+- ordered: it means that the items have a defined order, and that order will not change.
+- unchangeable: meaning that we cannot change, add or remove items after the tuple has been created
+- duplicate: Since tuples are indexed, they can have items with the same value
+
+Tuples are written with round brackets.
+
+Tuple items are indexed, the first item has index [0], the second item has index [1] etc.
+
+```Python
+thistuple = ("apple", "banana", "cherry", "apple", "cherry")
+print(thistuple)
+'''
+('apple', 'banana', 'cherry', 'apple', 'cherry')
+'''
+```
+
+#### Length - `len()`
+
+```Python
+thistuple = ("apple", "banana", "cherry")
+print(len(thistuple))
+'''
+3
+'''
+```
+
+#### Pack Tuples
+
+When we create a tuple, we normally assign values to it. This is called "packing" a tuple
+
+Create Tuple With One Item
+
+- to add a comma after the item, otherwise Python will not recognize it as a tuple.
+
+    ```Python
+    thistuple = ("apple",)
+    print(type(thistuple))
+    '''
+    <class 'tuple'>
+    '''
+
+    #NOT a tuple
+    thistuple = ("apple")
+    print(type(thistuple))
+    '''
+    <class 'str'>
+    '''
+    ```
+
+Data Types of Items, and type()
+
+- A tuple can contain different data types:
+
+    ```Python
+    tuple1 = ("apple", "banana", "cherry")
+    tuple2 = (1, 5, 7, 9, 3)
+    tuple3 = (True, False, False)
+    tuple1 = ("abc", 34, True, 40, "male")
+    ```
+
+- `<class 'tuple'>`
+
+    ```Python
+    mytuple = ("apple", "banana", "cherry")
+    print(type(mytuple))
+    '''
+    <class 'tuple'>
+    '''
+    ```
+
+tuple() Constructor
+
+```Python
+thistuple = tuple(("apple", "banana", "cherry")) # note the double round-brackets
+print(thistuple)
+'''
+('apple', 'banana', 'cherry')
+'''
+```
+
+#### Access Tuple Items
+
+You can access tuple items by referring to the index number, inside square brackets:
+
+```Python
+thistuple = ("apple", "banana", "cherry")
+print(thistuple[1])
+'''
+banana
+'''
+
+thistuple = ("apple", "banana", "cherry", "orange", "kiwi", "melon", "mango")
+print(thistuple[2:5])
+'''
+('cherry', 'orange', 'kiwi')
+'''
+
+thistuple = ("apple", "banana", "cherry", "orange", "kiwi", "melon", "mango")
+print(thistuple[:4])
+'''
+('apple', 'banana', 'cherry', 'orange')
+'''
+```
+
+Check if Item Exists
+
+```Python
+thistuple = ("apple", "banana", "cherry")
+if "apple" in thistuple:
+    print("Yes, 'apple' is in the fruits tuple")
+'''
+Yes, 'apple' is in the fruits tuple
+'''
+```
+
+#### Update Tuples
+
+Tuples are unchangeable, meaning that you cannot change, add, or remove items once the tuple is created.
+
+However, you can convert the tuple into a list, change the list, and convert the list back into a tuple.
+
+```Python
+# Change Tuple Values
+x = ("apple", "banana", "cherry")
+y = list(x)
+y[1] = "kiwi"
+x = tuple(y)
+print(x)
+'''
+('apple', 'kiwi', 'cherry')
+'''
+
+# Add Items
+thistuple = ("apple", "banana", "cherry")
+y = list(thistuple)
+y.append("orange")
+thistuple = tuple(y)
+print(thistuple)
+'''
+('apple', 'banana', 'cherry', 'orange')
+'''
+
+# Add tuple to a tuple
+thistuple = ("apple", "banana", "cherry")
+y = ("orange",)
+thistuple += y
+print(thistuple)
+'''
+('apple', 'banana', 'cherry', 'orange')
+'''
+
+# Remove Items
+thistuple = ("apple", "banana", "cherry")
+y = list(thistuple)
+y.remove("apple")
+thistuple = tuple(y)
+print(thistuple)
+'''
+('banana', 'cherry')
+'''
+
+# Delete the tuple completely
+thistuple = ("apple", "banana", "cherry")
+del thistuple
+print(thistuple) 
+#this will raise an error because the tuple no longer exists
+```
+
+#### Unpack Tuples
+
+to extract the values back into variables. This is called "unpacking":
+
+```Python
+fruits = ("apple", "banana", "cherry")
+(green, yellow, red) = fruits
+print(green)
+print(yellow)
+print(red)
+'''
+apple
+banana
+cherry
+'''
+```
+
+If the number of variables is less than the number of values, you can add an * to the variable name and the values will be assigned to the variable as a list:
+
+```Python
+fruits = ("apple", "banana", "cherry", "strawberry", "raspberry")
+(green, yellow, *red) = fruits
+print(green)
+print(yellow)
+print(red)
+'''
+apple
+banana
+['cherry', 'strawberry', 'raspberry']
+'''
+
+fruits = ("apple", "mango", "papaya", "pineapple", "cherry")
+(green, *tropic, red) = fruits
+print(green)
+print(tropic)
+print(red)
+'''
+apple
+['mango', 'papaya', 'pineapple']
+cherry
+'''
+```
+
+#### Loop Tuples
+
+Loop Through a Tuple
+
+```Python
+thistuple = ("apple", "banana", "cherry")
+for x in thistuple:
+    print(x)
+'''
+apple
+banana
+cherry
+'''
+```
+
+Loop Through the Index Numbers - `range()` + `len()`
+
+```Python
+thistuple = ("apple", "banana", "cherry")
+for i in range(len(thistuple)):
+    print(thistuple[i])
+'''
+apple
+banana
+cherry
+'''
+```
+
+#### Join Tuples
+
+Join Two Tuples
+
+- To join two or more tuples you can use the `+` operator:
+
+    ```Python
+    tuple1 = ("a", "b" , "c")
+    tuple2 = (1, 2, 3)
+    tuple3 = tuple1 + tuple2
+    print(tuple3)
+    '''
+    ('a', 'b', 'c', 1, 2, 3)
+    '''
+    ```
+
+Multiply Tuples
+
+- If you want to multiply the content of a tuple a given number of times, you can use the `*` operator:
+
+    ```Python
+    fruits = ("apple", "banana", "cherry")
+    mytuple = fruits * 2
+    print(mytuple)
+    '''
+    ('apple', 'banana', 'cherry', 'apple', 'banana', 'cherry')
+    '''
+    ```
+
+#### Tuple count()
+
+Return the number of times the value y appears in the tuple:
+
+```Python
+# Return the number of times the value 5 appears in the tuple:
+thistuple = (1, 3, 7, 8, 7, 5, 4, 6, 8, 5)
+x = thistuple.count(5)
+print(x)
+'''
+2
+'''
+```
+
+#### Tuple index()
+
+Search for the first occurrence of the value y, and return its position:
+
+```Python
+# Search for the first occurrence of the value 8, and return its position:
+thistuple = (1, 3, 7, 8, 7, 5, 4, 6, 8, 5)
+x = thistuple.index(8)
+print(x)
+'''
+3
+'''
+```
+
+<h2 id="4.12">Sets</h2>
+
+A set is a collection which is **unordered**, **unchangeable***, and **unindexed**, thus do not allow duplicate values..
+
+- Set items can appear in a different order every time you use them, and cannot be referred to by index or key.
+- Set items are unchangeable, meaning that we cannot change the items after the set has been created, but you can remove items and add new items.
+- Sets cannot have two items with the same value
+
+```Python
+thisset = {"apple", "banana", "cherry", "apple"}
+print(thisset)
+'''
+{'cherry', 'apple', 'banana'}
+'''
+```
+
+#### Length - `len()`
+
+```Python
+thisset = {"apple", "banana", "cherry"}
+print(len(thisset))
+'''
+3
+'''
+```
+
+#### Pack Sets
+
+Data Types of Sets
+
+- A set can contain different data types:
+
+    ```Python
+    set1 = {"apple", "banana", "cherry"}
+    set2 = {1, 5, 7, 9, 3}
+    set3 = {True, False, False}
+    set4 = {"abc", 34, True, 40, "male"}
+    ```
+
+type() - `<class 'set'>`
+
+```Python
+myset = {"apple", "banana", "cherry"}
+print(type(myset))
+'''
+<class 'set'>
+'''
+```
+
+Constructor
+
+```Python
+thisset = set(("apple", "banana", "cherry")) # note the double round-brackets
+print(thisset)
+'''
+{'banana', 'cherry', 'apple'}
+'''
+```
+
+#### Access Set Items
+
+You cannot access items in a set by referring to an index or a key.
+
+- But you can loop through the set items using a `for` loop
+
+    ```Python
+    thisset = {"apple", "banana", "cherry"}
+    for x in thisset:
+        print(x)
+    '''
+    cherry
+    banana
+    apple
+    '''
+    ```
+
+- or ask if a specified value is present in a set, by using the `in` keyword
+
+    ```Python
+    thisset = {"apple", "banana", "cherry"}
+    print("banana" in thisset)
+    '''
+    True
+    '''
+    ```
+
+#### Add Set Items - `add()`, `update()`
+
+Once a set is created, you cannot change its items, but you can add new items.
+
+- Add Items
+
+    ```Python
+    thisset = {"apple", "banana", "cherry"}
+    thisset.add("orange")
+    print(thisset)
+    '''
+    {'orange', 'cherry', 'apple', 'banana'}
+    '''
+    ```
+
+- Add Sets or Any Iterable - `update()`
+
+    ```Python
+    thisset = {"apple", "banana", "cherry"}
+    tropical = {"pineapple", "mango", "papaya"}
+    thisset.update(tropical)
+    print(thisset)
+    '''
+    {'papaya', 'cherry', 'pineapple', 'mango', 'apple', 'banana'}
+    '''
+
+    thisset = {"apple", "banana", "cherry"}
+    mylist = ["kiwi", "orange"]
+    thisset.update(mylist)
+    print(thisset)
+    '''
+    {'kiwi', 'orange', 'apple', 'banana', 'cherry'}
+    '''
+    ```
+
+#### Remove Set Items - `remove()`, `discard()`, `pop`, `clear()`, `del`
+
+If the item to remove does not exist, `remove()` will raise an error.
+
+If the item to remove does not exist, `discard()` will NOT raise an error.
+
+```Python
+thisset = {"apple", "banana", "cherry"}
+thisset.remove("banana")
+print(thisset)
+'''
+{'cherry', 'apple'}
+'''
+
+thisset = {"apple", "banana", "cherry"}
+thisset.discard("banana")
+print(thisset)
+'''
+{'cherry', 'apple'}
+'''
+```
+
+Sets are unordered, so when using the pop() method, you do not know which item that gets removed.
+
+```Python
+thisset = {"apple", "banana", "cherry"}
+x = thisset.pop()
+print(x)
+print(thisset)
+'''
+apple
+{'banana', 'cherry'}
+'''
+```
+
+The `clear()` method empties the set, and the `del` keyword will delete the set completely:
+
+```Python
+thisset = {"apple", "banana", "cherry"}
+thisset.clear()
+print(thisset)
+'''
+set()
+'''
+
+thisset = {"apple", "banana", "cherry"}
+del thisset
+print(thisset)
+```
+
+#### Join Sets
+
+Join Two Sets
+
+- `union()` method that returns a new set containing all items from both sets
+
+    ```Python
+    set1 = {"a", "b" , "c"}
+    set2 = {1, 2, 3}
+    set3 = set1.union(set2)
+    print(set3)
+    '''
+    {'a', 1, 2, 3, 'c', 'b'}
+    '''
+    ```
+
+- `update()` method that inserts all the items from one set into another
+
+    ```Python
+    set1 = {"a", "b" , "c"}
+    set2 = {1, 2, 3}
+    set1.update(set2)
+    print(set1)
+    '''
+    {'c', 1, 2, 3, 'a', 'b'}
+    '''
+    ```
+
+- Both `union()` and `update()` will exclude any duplicate items.
+
+Keep ONLY the Duplicates
+
+- The `intersection_update()` method will keep only the items that are present in both sets.
+
+    ```Python
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "microsoft", "apple"}
+    x.intersection_update(y)
+    print(x)
+    '''
+    {'apple'}
+    '''
+    ```
+
+- The `intersection()` method will return a new set, that only contains the items that are present in both sets.
+
+    ```Python
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "microsoft", "apple"}
+    z = x.intersection(y)
+    print(z)
+    '''
+    {'apple'}
+    '''
+    ```
+
+Keep All, But NOT the Duplicates
+
+- The `symmetric_difference_update()` method will keep only the elements that are NOT present in both sets.
+
+    ```Python
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "microsoft", "apple"}
+    x.symmetric_difference_update(y)
+    print(x)
+    '''
+    {'google', 'microsoft', 'banana', 'cherry'}
+    '''
+    ```
+
+- The `symmetric_difference()` method will return a new set, that contains only the elements that are NOT present in both sets.
+
+    ```Python
+    x = {"apple", "banana", "cherry"}
+    y = {"google", "microsoft", "apple"}
+    z = x.symmetric_difference(y)
+    print(z)
+    '''
+    {'microsoft', 'cherry', 'banana', 'google'}
+    '''
+    ```
+
+#### Set Methods API
+
+https://www.w3schools.com/python/python_sets_methods.asp
+
+<h2 id="4.13">Dictionaries</h2>
+
+Dictionaries are used to store data values in `key:value` pairs.
+
+A dictionary is a collection which is ordered*, changeable and do not allow duplicates.
+
+- As of Python version 3.7, dictionaries are ordered. In Python 3.6 and earlier, dictionaries are unordered.
+- ordered: it means that the items have a defined order, and that order will not change.
+- changeable: meaning that we can change, add or remove items after the dictionary has been created.
+- Dictionaries cannot have two items with the same key.
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964,
+    "year": 2020
+}
+print(thisdict)
+'''
+{'brand': 'Ford', 'model': 'Mustang', 'year': 2020}
+'''
+```
+
+#### Length - `len()`
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1996
+}
+print(len(thisdict))
+'''
+3
+'''
+```
+
+#### Pack Dictionary
+
+Data Types of Dictionary Items
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "electric": False,
+    "year": 1964,
+    "colors": ["red", "white", "blue"]
+}
+```
+
+type() - `<class 'dict'>`
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+print(type(thisdict))
+'''
+<class 'dict'>
+'''
+```
+
+Constructor - `dict()`
+
+```Python
+thisdict = dict(name = "John", age = 36, country = "Norway")
+print(thisdict)
+'''
+{'name': 'John', 'age': 36, 'country': 'Norway'}
+'''
+```
+
+#### Access Dictionary Items
+
+You can access the items of a dictionary by referring to its key name, inside square brackets, or using `get()`:
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+x = thisdict["model"]
+print(x)
+'''
+Mustang
+'''
+
+x = thisdict.get("model")
+print(x)
+'''
+Mustang
+'''
+```
+
+The `keys()` method will return a list of all the keys in the dictionary.
+
+```Python
+thisdict = {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+x = thisdict.keys()
+print(x)
+'''
+dict_keys(['brand', 'model', 'year'])
+'''
+```
+
+The `values()` method will return a list of all the values in the dictionary.
+
+```Python
+thisdict = {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+x = thisdict.values()
+print(x)
+'''
+dict_values(['Ford', 'Mustang', 1964])
+'''
+```
+
+The `items()` method will return each item in a dictionary, as tuples in a list.
+
+```Python
+thisdict = {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+x = thisdict.items()
+print(x)
+'''
+dict_items([('brand', 'Ford'), ('model', 'Mustang'), ('year', 1964)])
+'''
+```
+
+Check if Key Exists - `in`
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+if "model" in thisdict:
+    print("Yes, 'model' is one of the keys in the thisdict dictionary")
+```
+
+#### Change Dictionary Items
+
+You can change the value of a specific item by referring to its key name:
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+thisdict["year"] = 2018
+print(thisdict.items())
+'''
+dict_items([('brand', 'Ford'), ('model', 'Mustang'), ('year', 2018)])
+'''
+```
+
+The `update()` method will update the dictionary with the items from the given argument which is a dictionary, or an iterable object with `key:value` pairs.
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+thisdict.update({"year": 2020})
+print(thisdict.items())
+'''
+dict_items([('brand', 'Ford'), ('model', 'Mustang'), ('year', 2020)])
+'''
+```
+
+#### Add Dictionary Items
+
+Adding an item to the dictionary is done by using a new index key and assigning a value to it:
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+thisdict["color"] = "red"
+print(thisdict)
+'''
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'color': 'red'}
+'''
+```
+
+The `update()` method will update the dictionary with the items from a given argument which is a dictionary, or an iterable object with `key:value` pairs. If the item does not exist, the item will be added.
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+thisdict.update({"color": "red"})
+print(thisdict)
+'''
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'color': 'red'}
+'''
+```
+
+#### Remove Dictionary Items
+
+The `pop()` method removes the item with the specified key name:
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+thisdict.pop("model")
+print(thisdict)
+'''
+{'brand': 'Ford', 'year': 1964}
+'''
+```
+
+The `popitem()` method removes the last inserted item (in versions before 3.7, a random item is removed instead):
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+thisdict.popitem()
+print(thisdict)
+'''
+{'brand': 'Ford', 'model': 'Mustang'}
+'''
+```
+
+The `clear()` method empties the dictionary:
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+thisdict.clear()
+print(thisdict)
+'''
+{}
+'''
+```
+
+The `del` keyword removes the item with the specified key name, or delete the dictionary completely:
+
+```Python
+thisdict = {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+del thisdict["model"]
+print(thisdict)
+'''
+{'brand': 'Ford', 'year': 1964}
+'''
+
+del thisdict
+print(thisdict) 
+#this will cause an error because "thisdict" no longer exists.
+```
+
+#### Loop Dictionaries
+
+You can use the `keys()` method to return the keys of a dictionary:
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+for x in thisdict:
+    print(x)
+'''
+brand
+model
+year
+'''
+
+for x in thisdict.keys():
+    print(x)
+'''
+brand
+model
+year
+'''
+```
+
+You can use the `values()` method to return values of a dictionary:
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+for x in thisdict:
+    print(thisdict[x])
+'''
+Ford
+Mustang
+1964
+'''
+
+for x in thisdict.values():
+    print(x)
+'''
+Ford
+Mustang
+1964
+'''
+```
+
+Loop through both keys and values, by using the `items()` method:
+
+```Python
+thisdict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+for x, y in thisdict.items():
+    print(x, y)
+'''
+brand Ford
+model Mustang
+year 1964
+'''
+```
+
+#### Copy Dictionaries
+
+You cannot copy a dictionary simply by typing `dict2 = dict1`
+
+- Make a copy of a dictionary with the `copy()` method:
+
+    ```Python
+    thisdict = {
+        "brand": "Ford",
+        "model": "Mustang",
+        "year": 1964
+        }
+    mydict = thisdict.copy()
+    print(mydict)
+    '''
+    {'brand': 'Ford', 'model': 'Mustang', 'year': 1964}
+    '''
+    ```
+
+- Another way to make a copy is to use the built-in function `dict()`.
+
+    ```Python
+    thisdict = {
+        "brand": "Ford",
+        "model": "Mustang",
+        "year": 1964
+    }
+    mydict = dict(thisdict)
+    print(mydict)
+    '''
+    {'brand': 'Ford', 'model': 'Mustang', 'year': 1964}
+    '''
+    ```
+
+#### Nested Dictionaries
+
+```Python
+myfamily = {
+    "child1" : {
+        "name" : "Emil",
+        "year" : 2004
+    },
+    "child2" : {
+        "name" : "Tobias",
+        "year" : 2007
+    },
+    "child3" : {
+        "name" : "Linus",
+        "year" : 2011
+    }
+}
+
+# --------------------------
+
+child1 = {
+    "name" : "Emil",
+    "year" : 2004
+}
+child2 = {
+    "name" : "Tobias",
+    "year" : 2007
+}
+child3 = {
+    "name" : "Linus",
+    "year" : 2011
+}
+
+myfamily = {
+    "child1" : child1,
+    "child2" : child2,
+    "child3" : child3
+}
+```
+
+<h2 id="4.14">If ... Else</h2>
+
+Python supports the usual logical conditions from mathematics:
+
+- Equals: `a == b`
+- Not Equals: `a != b`
+- Less than: `a < b`
+- Less than or equal to: `a <= b`
+- Greater than: `a > b`
+- Greater than or equal to: `a >= b`
+
+```Python
+a = 200
+b = 33
+if b > a:
+    print("b is greater than a")
+elif a == b:
+    print("a and b are equal")
+else:
+    print("a is greater than b")
+```
+
+Short Hand
+
+```Python
+a = 2
+b = 330
+
+if a > b: print("a is greater than b")
+'''
+
+'''
+
+print("A") if a > b else print("B")
+'''
+B
+'''
+```
+
+The `and` keyword is a logical operator, and is used to combine conditional statements:
+
+```Python
+a = 200
+b = 33
+c = 500
+if a > b and c > a:
+    print("Both conditions are True")
+'''
+Both conditions are True
+'''
+```
+
+The `or` keyword is a logical operator, and is used to combine conditional statements:
+
+```Python
+a = 200
+b = 33
+c = 500
+if a > b or a > c:
+    print("At least one of the conditions is True")
+'''
+At least one of the conditions is True
+'''
+```
+
+`if` statements cannot be empty, but if you for some reason have an if statement with no content, put in the `pass` statement to avoid getting an error.
+
+```Python
+a = 33
+b = 200
+
+if b > a:
+    pass
+```
+
+<h2 id="4.15">While Loops</h2>
+
+With the `while` loop we can execute a set of statements as long as a condition is true.
+
+With the `break` statement we can stop the loop even if the while condition is true:
+
+With the `continue` statement we can stop the current iteration, and continue with the next:
+
+With the `else` statement we can run a block of code once when the condition no longer is true:
+
+```Python
+i = 1
+while i < 6:
+    print(i)
+    i += 1
+    if i == 3:
+        continue
+    if i == 5:
+        break
+else:
+    print("i is no longer less than 6")
+'''
+1
+2
+3
+4
+'''
+```
+
+<h2 id="4.16">For Loops</h2>
+
+A `for` loop is used for iterating over a sequence (that is either a `list`, a `tuple`, a `dictionary`, a `set`, or a `string`).
+
+```Python
+fruits = ["apple", "banana", "cherry"]
+for x in fruits:
+    print(x)
+'''
+apple
+banana
+cherry
+'''
+
+for x in "banana":
+    print(x)
+'''
+b
+a
+n
+a
+n
+a
+'''
+```
+
+With the break statement we can stop the loop before it has looped through all the items:
+
+With the continue statement we can stop the current iteration of the loop, and continue with the next:
+
+```Python
+fruits = ["apple", "banana", "cherry"]
+for x in fruits:
+    if x == "banana":
+        break
+    print(x)
+    if x == "apple":
+        continue
+'''
+apple
+'''
+```
+
+we can use the `range()` function to loop through a set of code a specified number of times which start from 0 by default, and increments by 1 (by default), and ends at a specified number.
+
+```Python
+for x in range(4):
+    print(x)
+'''
+0
+1
+2
+3
+'''
+
+for x in range(2, 6):
+    print(x)
+'''
+2
+3
+4
+5
+'''
+
+for x in range(2, 15, 3):
+    print(x)
+'''
+2
+5
+8
+11
+14
+'''
+```
+
+The `else` keyword in a for loop specifies a block of code to be executed when the loop is finished:
+
+- The `else` block will NOT be executed if the loop is stopped by a break statement.
+
+```Python
+for x in range(3):
+    print(x)
+else:
+    print("Finally finished!")
+'''
+0
+1
+2
+Finally finished!
+'''
+```
+
+`for` loops cannot be empty, but if you for some reason have a `for` loop with no content, put in the `pass` statement to avoid getting an error.
+
+```Python
+for x in [0, 1, 2]:
+    pass
+```
+
+<h2 id="4.17">Functions</h2>
+
+Creating a Function and Calling a Function
+
+```Python
+def my_function():
+    print("Hello from a function")
+
+my_function()
+```
+
+Arbitrary Arguments, `*args`
+
+- If you do not know how many arguments that will be passed into your function, add a `*` before the parameter name in the function definition.
+- This way the function will receive a `tuple` of arguments, and can access the items accordingly:
+
+    ```Python
+    def my_function(*kids):
+        print("The youngest child is " + kids[2])
+
+    my_function("Emil", "Tobias", "Linus")
+    '''
+    The youngest child is Linus
+    '''
+    ```
+
+Keyword Arguments
+
+- You can also send arguments with the `key = value` syntax.
+- This way the order of the arguments does not matter.
+
+    ```Python
+    def my_function(child3, child2, child1):
+        print("The youngest child is " + child3)
+
+    my_function(child1 = "Emil", child2 = "Tobias", child3 = "Linus")
+    '''
+    The youngest child is Linus
+    '''
+    ```
+
+Arbitrary Keyword Arguments, `**kwargs`
+
+- If you do not know how many keyword arguments that will be passed into your function, add two asterisk: `**` before the parameter name in the function definition.
+- This way the function will receive a `dictionary` of arguments, and can access the items accordingly:
+
+    ```Python
+    def my_function(**kid):
+        print("His last name is " + kid["lname"])
+
+    my_function(fname = "Tobias", lname = "Refsnes")
+    '''
+    His last name is Refsnes
+    '''
+    ```
+
+Default Parameter Value
+
+- If we call the function without argument, it uses the default value:
+
+    ```Python
+    def my_function(country = "Norway"):
+        print("I am from " + country)
+
+    my_function("Sweden")
+    my_function("India")
+    my_function()
+    my_function("Brazil")
+    '''
+    I am from Sweden
+    I am from India
+    I am from Norway
+    I am from Brazil
+    '''
+    ```
+
+Passing any data types of argument to a function (string, number, list, dictionary etc.)` as an argument, and it will be treated as the same data type inside the function.
+
+```Python
+def my_function(food):
+    for x in food:
+        print(x)
+
+fruits = ["apple", "banana", "cherry"]
+
+my_function(fruits)
+'''
+apple
+banana
+cherry
+'''
+```
+
+Return Values - `return`
+
+```Python
+def my_function(x):
+    return 5 * x
+
+print(my_function(3))
+print(my_function(5))
+print(my_function(9))
+'''
+15
+25
+45
+'''
+```
+
+`function` definitions cannot be empty, but if you for some reason have a `function` definition with no content, put in the `pass` statement to avoid getting an error.
+
+```Python
+def myfunction():
+    pass
+```
+
 
 
 
