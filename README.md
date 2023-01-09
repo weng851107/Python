@@ -2961,8 +2961,10 @@ def myfunction():
 
 <h1 id="5">交叉編譯ARM架構Python</h1>
 
+[Ubuntu安装python](https://developer.aliyun.com/article/675910)
 
+[Python3交叉編譯至arm-linux](https://www.jianshu.com/p/7346cc4e41ac)
 
-
+[Python Source](https://www.python.org/ftp/python)
 
 
