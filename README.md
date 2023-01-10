@@ -22,6 +22,8 @@ If there is related infringement or violation of related regulations, please con
   - [Ubuntu修改默認Python版本](#3.2)
   - [套件管理工具 pip 指令用法](#3.3)
     - [requirements.txt](#3.3.1)
+  - [Ubuntu python 安裝](#3.4)
+  - [Linux python 內建虛擬環境--venv](#3.5)
 - [Python Tutorial](#4)
   - [Syntax](#4.1)
   - [Variables](#4.2)
@@ -40,6 +42,9 @@ If there is related infringement or violation of related regulations, please con
   - [While Loops](#4.15)
   - [For Loops](#4.16)
   - [Functions](#4.17)
+  - [Lambda](#4.18)
+  - [Arrays](#4.19)
+  - [Classes and Objects](#4.20)
 - [交叉編譯ARM架構Python](#5)
 
 
@@ -443,6 +448,220 @@ typing_extensions==4.4.0
 `pip install -r requirements.txt` 安裝txt內的套件與版本
 
 `pip uninstall -r requirements.txt -y` 卸載requirements.txt內的所有套件
+
+<h2 id="3.4">Ubuntu python 安裝</h2>
+
+[FTP: python source](https://www.python.org/ftp/python)
+
+---
+
+[Ubuntu16.04安裝Python3.8，3.7，3.9(含卸載方法，支持多版本共存)](https://blog.csdn.net/qq_35743870/article/details/125903040)
+
+下載源碼安裝包
+
+```bash
+cd ~
+wget https://www.python.org/ftp/python/3.8.11/Python-3.8.11.tgz
+```
+
+創建安裝目錄
+
+```bash
+cd /usr/local/python
+mkdir ./python3.8
+```
+
+解壓安裝包
+
+```bash
+cd ~
+tar zxvf ~/Python-3.8.11.tgz
+```
+
+配置將要安裝的目錄
+
+```bash
+cd ~/Python-3.8.11 
+./configure prefix= /usr/local/python/python3.8  --enable-optimizations
+```
+
+- 看似沒有放在/usr/local/目錄下的話會有問題???
+- 如果不修改 `prefix路徑` 看起編譯出來會是最正常的，還會有pip3.8
+
+編譯源碼
+
+```bash
+cd ~/Python-3.8.11 
+make -j 2
+```
+
+安裝
+
+```bash
+cd ~/Python-3.8.11
+make altinstall
+#make altinstall  >&1|tee make.log
+```
+
+添加環境變量
+
+```bash
+vim ~/.bashrc
+
+export PATH = $PATH :/usr/local/python/python3.8/bin
+```
+
+pip安裝依賴包
+
+- 對於python3.8，安裝後使用pip請以python3.8 -m pip install xxx的形式使用
+- 對於python3.8的使用，建議明確指明版本來使用，而不建議更改python3的指向，因為Ubuntu的圖形界面一定程度上是依賴自帶的兩個版本的python，更改指向可能會帶來意想不到的問題
+
+刪除安裝文件
+
+```bash
+cd ~
+sudo rm -r ./Python-3.8.11
+rm -r ./Python-3.8.11.tgz
+
+systemctl reboot
+```
+
+卸載方法
+
+```bash
+#1.移除指向
+sudo update-alternatives --remove python /usr/ local /python/ python3. 8 /bin/ python3.8 
+sudo update-alternatives --remove python3 /usr/ local /python/ python3. 8 /bin/ python3.8 
+#2.刪除安裝目錄，對於Linux而言便是卸載
+rm -r /usr/ local /python/ python3.8 
+#3.移除環境變量
+gedit ~/.bashrc
+把上面添加的環境變量內容刪除即可
+source ~/.bashrc
+```
+
+---
+
+[Installing Python 3.7 on Ubuntu with Apt and Source](https://linuxize.com/post/how-to-install-python-3-7-on-ubuntu-18-04/#installing-python-37-on-ubuntu-with-apt)
+
+Start by updating the packages list and installing the prerequisites:
+
+```bash
+$ sudo apt update
+$ sudo apt install software-properties-common
+```
+
+Next, add the deadsnakes PPA to your sources list: When prompted press Enter to continue
+
+```bash
+$ sudo add-apt-repository ppa:deadsnakes/ppa
+```
+
+Once the repository is enabled, install Python 3.7 with:
+
+```bash
+$ sudo apt install python3.7
+```
+
+At this point, Python 3.7 is installed on your Ubuntu system and ready to be used. You can verify it by typing:
+
+```bash
+$ python3.7 --version
+
+Python 3.7.3
+```
+
+Note: Ubuntu 16.04 似乎沒辦法
+
+---
+
+[[Python] Ubuntu 16.04 上安裝python3.7 和pip 並配置虛擬環境](https://blog.csdn.net/weixin_43742643/article/details/111993330)
+
+Ubuntu 16.04 自帶python 2.7 和python 3.5
+
+安裝pip
+
+- 不要直接使用下面的指令，這樣安裝的是python3.5 版本的pip
+
+    ```bash
+    sudo apt-get install python3-pip
+    ```
+
+- 下面的命令也不行，會直接報錯
+
+    ```bash
+    sudo apt-get install python3.7-pip
+    ```
+
+- 正確的做法是使用 `get-pip.py`。`--user`表示安裝在當前用戶目錄。
+
+    ```bash
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python3.7 get-pip.py #--user
+    ```
+
+  - 如果是普通用戶身份執行
+
+    - pip 安裝在在`/home/hanjiale/.local/lib/python3.7/site-packages/`路徑下，指令會在`/home/hanjiale/.local/bin/`路徑下
+    - 可以把路徑/home/hanjiale/.local/bin/添加到環境變量或這樣 `python3.7 -m pip ...` 執行
+
+  - root 身份或者使用sudo執行
+
+    - pip 安裝在`/usr/local/lib/python3.7/dist-packages/`路徑下，指令會在`/usr/local/bin/`路徑下
+
+  - Note: 在 Ubuntu16.04 目前沒有成功
+
+  - Note: 如果不修改 configure的 `prefix路徑` 看起編譯出來會是最正常的，還會有pip3.8
+
+- 安裝後查看
+
+    ```bash
+    python3.7 -m pip -V
+    ```
+
+- 更新pip
+
+    ```bash
+    python3.7 -m pip install -U pip
+    ```
+
+- 卸載pip，並不會影響已安裝的包
+
+    ```bash
+    python3.7 -m pip uninstall pip
+    ```
+
+<h2 id="3.5">Linux python 內建虛擬環境--venv</h2>
+
+[Python 虛擬環境--venv](https://dev.to/codemee/python-xu-ni-huan-jing-venv-nbg)
+
+安裝套件
+
+```bash
+$ sudo apt install python3-venv
+```
+
+建立虛擬環境
+
+```bash
+$ python3 -m venv testenv
+```
+
+切換到虛擬環境
+
+```bash
+$ source testenv/bin/activate
+
+(testenv) $
+```
+
+離開虛擬環境
+
+```bash
+(testenv) $ deactivate
+
+$
+```
 
 <h1 id="4">Python Tutorial</h1>
 
@@ -2952,7 +3171,73 @@ def myfunction():
     pass
 ```
 
+<h2 id="4.18">Lambda</h2>
 
+A lambda function can take **any number of arguments**, but can only have **one expression**.
+
+`lambda arguments : expression`
+
+```Python
+x = lambda a : a + 10
+print(x(5))
+'''
+15
+'''
+
+x = lambda a, b : a * b
+print(x(5, 6))
+'''
+30
+'''
+
+x = lambda a, b, c : a + b + c
+print(x(5, 6, 2))
+'''
+13
+'''
+```
+
+The power of lambda is better shown when you use them as an anonymous function inside another function.
+
+```Python
+def myfunc(n):
+    return lambda a : a * n
+
+mydoubler = myfunc(2)
+print(mydoubler(11))
+'''
+22
+'''
+
+mytripler = myfunc(3)
+print(mytripler(11))
+'''
+33
+'''
+```
+
+<h2 id="4.19">Arrays</h2>
+
+Python does not have built-in support for Arrays, but Python `Lists` can be used instead.
+
+<h2 id="4.20">Classes and Objects</h2>
+
+#### Create Class and Object
+
+To create a class, use the keyword `class`:
+
+Use the class named `MyClass` to create objects:
+
+```Python
+class MyClass:
+    x = 5
+
+p1 = MyClass()
+print(p1.x)
+'''
+5
+'''
+```
 
 
 
