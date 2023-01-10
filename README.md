@@ -45,6 +45,7 @@ If there is related infringement or violation of related regulations, please con
   - [Lambda](#4.18)
   - [Arrays](#4.19)
   - [Classes and Objects](#4.20)
+  - [Inheritance](#4.21)
 - [交叉編譯ARM架構Python](#5)
 
 
@@ -3239,17 +3240,307 @@ print(p1.x)
 '''
 ```
 
+#### The `__init__()` Function
 
+All classes have a function called `__init__()`, which is always executed when the class is being initiated.
 
+```Python
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+p1 = Person("John", 36)
+
+print(p1.name)
+print(p1.age)
+'''
+John
+36
+'''
+```
+
+#### The `__str__()` Function
+
+The `__str__()` function controls what should be returned when the class object is represented as a string.
+
+If the `__str__()` function is not set, the string representation of the object is returned:
+
+```Python
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+class Person_v2:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f"{self.name}({self.age})"
+
+p1 = Person("John", 36)
+print(p1)
+'''
+<__main__.Person object at 0x0000025217A9FB88>
+'''
+
+p2 = Person_v2("Antony", 26)
+print(p2)
+'''
+Antony(26)
+'''
+```
+
+#### Object Methods
+
+Methods in objects are functions that belong to the object.
+
+```Python
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def myfunc(self):
+        print("Hello my name is " + self.name)
+
+p1 = Person("John", 36)
+p1.myfunc()
+'''
+Hello my name is John
+'''
+```
+
+#### The `self` Parameter
+
+The `self` parameter is a reference to the current instance of the class, and is used to **access variables that belongs to the class**.
+
+It does not have to be named `self` , you can call it whatever you like, but it has to **be the first parameter of any function in the class**.
+
+#### Modify/Delete Object Properties
+
+You can modify properties on objects like this:
+
+You can delete properties on objects by using the `del` keyword:
+
+You can delete objects by using the `del` keyword:
+
+```Python
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f"{self.name}({self.age})"
+
+    def myfunc(self):
+        print("Hello my name is " + self.name)
+
+p1 = Person("John", 36)
+p1.age = 40
+print(p1)
+
+del p1.age
+del p1
+```
+
+#### The pass Statement
+
+`class` definitions cannot be empty, but if you for some reason have a `class` definition with no content, put in the `pass` statement to avoid getting an error.
+
+```Python
+class Person:
+    pass
+```
+
+<h2 id="4.21">Inheritance</h2>
+
+Inheritance allows us to define a class that inherits all the methods and properties from another class.
+
+- **Parent class** is the class being inherited from, also called **base class**.
+  - Any class can be a parent class, so the syntax is the same as creating any other class
+- **Child class** is the class that inherits from another class, also called **derived class**.
+
+#### Create a Child Class
+
+To create a class that inherits the functionality from another class, **send the parent class as a parameter when creating the child class**:
+
+```Python
+class Person:
+    def __init__(self, fname, lname):
+        self.firstname = fname
+        self.lastname = lname
+
+    def printname(self):
+        print(self.firstname, self.lastname)
+
+class Student(Person):
+    pass
+```
+
+#### Add the `__init__()` Function
+
+When you add the `__init__()` function, the child class will no longer inherit the parent's `__init__()` function. The child's `__init__()` function overrides the inheritance of the parent's `__init__()` function.
+
+To keep the inheritance of the parent's `__init__()` function, add a call to the parent's `__init__()` function:
+
+```Python
+class Student(Person):
+    def __init__(self, fname, lname):
+        Person.__init__(self, fname, lname)
+```
+
+Use the `super()` Function
+
+- `super()` function that will make the child class inherit all the methods and properties from its parent:
+
+```Python
+class Student(Person):
+    def __init__(self, fname, lname):
+        super().__init__(fname, lname)
+```
+
+Add another parameter in the `__init__()` function:
+
+```Python
+class Person:
+    def __init__(self, fname, lname):
+        self.firstname = fname
+        self.lastname = lname
+
+    def printname(self):
+        print(self.firstname, self.lastname)
+
+class Student(Person):
+    def __init__(self, fname, lname):
+        super().__init__(fname, lname)
+        self.graduationyear = 2019
+
+class Student_v2(Person):
+    def __init__(self, fname, lname, year):
+        super().__init__(fname, lname)
+        self.graduationyear = year
+```
+
+If you add a method in the child class with the same name as a function in the parent class, the inheritance of the parent method will be overridden.
+
+```Python
+class Person:
+    def __init__(self, fname, lname):
+        self.firstname = fname
+        self.lastname = lname
+
+    def welcome(self):
+        print(self.firstname, self.lastname)
+
+class Student(Person):
+    def __init__(self, fname, lname, year):
+        super().__init__(fname, lname)
+        self.graduationyear = year
+
+    def welcome(self):
+        print("Welcome", self.firstname, self.lastname, "to the class of", self.graduationyear)
+
+p1 = Student("Antony", "Weng", 1996)
+p1.welcome()
+'''
+Welcome Antony Weng to the class of 1996
+'''
+```
 
 
 
 <h1 id="5">交叉編譯ARM架構Python</h1>
 
-[Ubuntu安装python](https://developer.aliyun.com/article/675910)
+[Python Source](https://www.python.org/ftp/python)
 
 [Python3交叉編譯至arm-linux](https://www.jianshu.com/p/7346cc4e41ac)
 
-[Python Source](https://www.python.org/ftp/python)
+[python移植编译到arm上](https://blog.csdn.net/u013546508/article/details/124884330)
+
+[python及第三方庫交叉編譯](https://z.itpub.net/article/detail/3EFB2D2C7727FA9FFE7F73739069E443)
+
+
+<h2 id="5.1">交叉編譯介紹</h2>
+
+什麼是交叉編譯：
+
+- 在一個平台上生成另一個平台上的可執行代碼
+
+為什麼要交叉編譯：
+
+- 在進行嵌入式系統的開發時，運行程序的目標平台通常具有有限的存儲空間和運算能力，比如常見的ARM 平台，其一般的靜態存儲空間比較小，而CPU運算能力弱。這種情況下，在ARM平台上進行本機編譯就不太可能了
+- 通過交叉編譯工具，我們就可以在CPU能力很強、存儲控件足夠的主機平台上（比如PC上）編譯出針對其他平台的可執行程序
+
+<h2 id="5.2">python及其第三方庫的交叉編譯背景</h2>
+
+交叉編譯鏈：linaro-aarch64-2020.09-gcc10.2-linux5.4.tar.xz
+
+目標板子(target主機)：armv8
+
+執行交叉編輯的主機(build主機)：ubuntu16.04-x86_64-linux-gnu
+
+python版本：3.8.0
+
+numpy==1.24.1
+
+<h2 id="5.3">交叉編譯的準備工作</h2>
+
+安裝cmake:  sudo apt-get install make cmake -y
+
+安裝libffi-dev 交叉編譯python 需要的依賴:   sudo apt-get install libffi-dev
+
+安裝zip 解壓壓縮包使用：sudo apt-get install zip -y
+
+<h2 id="5.4">交叉編譯python及其第三方的思路</h2>
+
+在build主機上交叉編譯target主機上的python版本，我們稱之為python-target
+
+<h2 id="5.5">準備交叉編譯工具</h2>
+
+將交叉編譯鏈添加到環境變量：`vim /etc/profile`
+
+添加 `export PATH=$PATH:/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin`
+
+重新加載環境變量：`source /etc/profile`
+
+測試：`aarch64-linux-gnu-gcc -v`
+
+<h2 id="5.6">編譯python-build</h2>
+
+解壓源碼：`tar zxvf Python-3.8.0.tgz`
+
+改名：`mv Python-3.5.2 python-3.5.2-build`
+
+`cd /home/wengweiting/Downloads/Python-3.8.0-build/`
+
+設置編譯環境，`./configure --prefix=/home/python-build`
+
+執行安裝編譯：`make` && `sudo make (alt)install`
+
+下載pip文件：`sudo curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py`
+
+安裝pip: `sudo ./python3 get-pip.py`
+
+將該python-build添加到環境變量，設置為build主機上默認的python: export PATH=/home/python-build/bin:$PATH
+
+安裝Cython: `sudo pip3 install Cython`
+
+測試：python3
+
+<h2 id="5.7">編譯python-target</h2>
+
+解壓源碼包：`sudo tar zxvf Python-3.8.0.tgz `
+
+改名：`mv Python-3.8.0 Python-3.8.0-target`
+
+`cd Python-3.8.0-target`
+
+創建文件夾：`sudo mkdir /home/python-target`
+
+
 
 
