@@ -46,6 +46,9 @@ If there is related infringement or violation of related regulations, please con
   - [Arrays](#4.19)
   - [Classes and Objects](#4.20)
   - [Inheritance](#4.21)
+  - [Iterators](#4.22)
+  - [Scope](#4.23)
+  - [Modules](#4.24)
 - [交叉編譯ARM架構Python](#5)
 
 
@@ -3451,6 +3454,275 @@ Welcome Antony Weng to the class of 1996
 '''
 ```
 
+<h2 id="4.22">Iterators</h2>
+
+An iterator is an object that contains a countable number of values.
+
+`__iter__()` and `__next__()`
+
+Lists, tuples, dictionaries, and sets are all iterable objects which have a iter() method which is used to get an iterator：
+
+```Python
+mytuple = ("apple", "banana", "cherry")
+myit = iter(mytuple)
+
+print(next(myit))
+print(next(myit))
+print(next(myit))
+'''
+apple
+banana
+cherry
+'''
+
+for x in mytuple:
+    print(x)
+'''
+apple
+banana
+cherry
+'''
+```
+
+Strings are also iterable objects, containing a sequence of characters：
+
+```Python
+mystr = "banana"
+myit = iter(mystr)
+
+print(next(myit))
+print(next(myit))
+print(next(myit))
+print(next(myit))
+print(next(myit))
+print(next(myit))
+'''
+b
+a
+n
+a
+n
+a
+'''
+
+for x in mystr:
+    print(x)
+'''
+b
+a
+n
+a
+n
+a
+'''
+```
+
+#### Create an Iterator
+
+To create an object/class as an iterator you have to implement the methods `__iter__()` and `__next__()` to your object.
+
+To prevent the iteration to go on forever, we can use the `StopIteration` statement.
+
+```Python
+class MyNumbers:
+    def __iter__(self):
+        self.a = 1
+        return self
+
+    def __next__(self):
+        if self.a <= 20:
+            x = self.a
+            self.a += 1
+            return x
+        else:
+            raise StopIteration
+
+myclass = MyNumbers()
+myiter = iter(myclass)
+
+for x in myiter:
+    print(x)
+```
+
+<h2 id="4.23">Scope</h2>
+
+A variable is only available from inside the region it is created.
+
+#### Local Scope
+
+A variable created inside a function belongs to the *local scope* of that function, and can only be used inside that function.
+
+```Python
+def myfunc():
+    x = 300
+    print(x)
+
+myfunc()
+'''
+300
+'''
+```
+
+#### Global Scope
+
+A variable created in the main body of the Python code is a global variable and belongs to the global scope.
+
+Global variables are available from within any scope, global and local.
+
+```Python
+x = 300
+
+def myfunc():
+    print(x)
+
+myfunc()
+'''
+300
+'''
+
+print(x)
+'''
+300
+'''
+```
+
+#### Naming Variables
+
+If you operate with the same variable name inside and outside of a function, Python will treat them as **two separate variables**, one available in the global scope (outside the function) and one available in the local scope (inside the function):
+
+```Python
+x = 300
+
+def myfunc():
+    x = 200
+    print(x)
+
+myfunc()
+'''
+200
+'''
+
+print(x)
+'''
+300
+'''
+```
+
+#### Global Keyword
+
+If you need to create a global variable, but are stuck in the local scope, you can use the `global` keyword.
+
+```Python
+x = 300
+
+def myfunc():
+    global x
+    x = 200
+    print(x)
+
+print(x)
+'''
+300
+'''
+
+myfunc()
+'''
+200
+'''
+
+print(x)
+'''
+200
+'''
+```
+
+<h2 id="4.24">Modules</h2>
+
+Consider a module to be the same as a code library which contains a set of functions.
+
+#### Create a Module
+
+To create a module just save the code you want in a file with the file extension `.py`:
+
+[mymodule.py](./Tutorial/code/mymodule.py)
+
+#### Use a Module
+
+Import the module named mymodule, and call the greeting function:
+
+```Python
+import mymodule
+
+mymodule.greeting("Jonathan")
+'''
+Hello, Jonathan
+'''
+
+a = mymodule.person1["age"]
+print(a)
+'''
+36
+'''
+```
+
+Re-naming a Module
+
+```Python
+import mymodule as mx
+
+mx.greeting("Jonathan")
+'''
+Hello, Jonathan
+'''
+
+a = mx.person1["age"]
+print(a)
+'''
+36
+'''
+```
+
+Built-in Modules
+
+```Python
+import platform
+
+x = platform.system()
+print(x)
+
+'''
+Windows
+'''
+```
+
+Using the dir() Function
+
+- There is a built-in function to list all the function names (or variable names) in a module.
+
+    ```Python
+    import platform
+
+    x = dir(platform)
+    print(x)
+    '''
+    ['DEV_NULL', '_UNIXCONFDIR', '_WIN32_CLIENT_RELEASES', '_WIN32_SERVER_RELEASES', '__builtins__', '__cached__', '__copyright__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', '__version__', '_comparable_version', '_component_re', '_default_architecture', '_dist_try_harder', '_follow_symlinks', '_ironpython26_sys_version_parser', '_ironpython_sys_version_parser', 
+    '_java_getprop', '_libc_search', '_linux_distribution', '_lsb_release_version', '_mac_ver_xml', '_node', '_norm_version', '_parse_release_file', '_platform', '_platform_cache', '_pypy_sys_version_parser', '_release_filename', '_release_version', '_supported_dists', '_sys_version', '_sys_version_cache', '_sys_version_parser', '_syscmd_file', '_syscmd_uname', '_syscmd_ver', '_uname_cache', '_ver_output', '_ver_stages', 'architecture', 'collections', 'dist', 'java_ver', 'libc_ver', 'linux_distribution', 'mac_ver', 'machine', 'node', 'os', 'platform', 'popen', 'processor', 'python_branch', 'python_build', 'python_compiler', 'python_implementation', 'python_revision', 'python_version', 'python_version_tuple', 're', 'release', 'subprocess', 'sys', 'system', 'system_alias', 'uname', 'uname_result', 'version', 'warnings', 'win32_ver']
+    '''
+    ```
+
+#### Import From Module
+
+You can choose to import only parts from a module, by using the `from` keyword.
+
+```Python
+from mymodule import person1
+
+print (person1["age"])
+'''
+36
+'''
+```
+
 
 
 <h1 id="5">交叉編譯ARM架構Python</h1>
@@ -3462,6 +3734,20 @@ Welcome Antony Weng to the class of 1996
 [python移植编译到arm上](https://blog.csdn.net/u013546508/article/details/124884330)
 
 [python及第三方庫交叉編譯](https://z.itpub.net/article/detail/3EFB2D2C7727FA9FFE7F73739069E443)
+
+---
+
+Source code 的 variable=@value@ in Makefiles
+
+- [variable=@value@ in Makefiles](https://stackoverflow.com/questions/11075778/variable-value-in-makefiles)
+
+- Typically you find this in `Makefile.in` files, which are processed by `configure` (which are in turn generated by `autoconf`) scripts.
+
+- In that case `@X@` will be replaced by the value of a shell variable `$X`, *if configure is told so*. If it's not, no occurrence in the input file will be touched by `configure`, hence leaving the replaceable string as it is. If you ask me these instances indicate slips in the build system.
+  - `autoconf` usually does `configures.ac ---> configure`
+  - the `configure` script itself often does `Makefile.config.in ---> Makefile.config` which in turn is included by a `Makefile` which then is read by `make` for it to determine how to build your project.
+  - `configure`, `Makefile` and `Makefile.config.in` are usually shipped with the source code.
+
 
 
 <h2 id="5.1">交叉編譯介紹</h2>
@@ -3497,7 +3783,17 @@ numpy==1.24.1
 
 <h2 id="5.4">交叉編譯python及其第三方的思路</h2>
 
+在build主機上交叉編譯zlib庫，這個是python源碼安裝必須的依賴庫
+
+在build主機上交叉編譯openssl庫，這個雖然不是源碼安裝必須的依賴庫，但是大部分其他庫都有可能使用到這個庫
+
+在build主機上安裝build主機上的python版本，我們成為python-build
+
 在build主機上交叉編譯target主機上的python版本，我們稱之為python-target
+
+在build主機上通過crossenv搭建target-python的運行虛擬環境
+
+在crossenv虛擬環境中通過pip打包交叉編譯第三方庫為.whl形式的
 
 <h2 id="5.5">準備交叉編譯工具</h2>
 
@@ -3508,6 +3804,54 @@ numpy==1.24.1
 重新加載環境變量：`source /etc/profile`
 
 測試：`aarch64-linux-gnu-gcc -v`
+
+<h2 id="5.6">準備openssl-build</h2>
+
+[openssl source code](https://www.openssl.org/source/)
+
+下載 openssl source code，`sudo wget https://www.openssl.org/source/old/1.0.2/openssl-1.0.2u.tar.gz`
+
+解壓縮，`sudo tar zxvf openssl-1.0.2u.tar.gz`
+
+`sudo mv openssl-1.0.2u openssl-1.0.2u-build`
+
+`cd openssl-1.0.2u-build/`
+
+設置編譯環境：`./config --prefix=/home/openssl-1.0.2u-build/openssl-build`
+
+執行編譯安裝：`sudo make && sudo make install` 此時在/home/openssl-1.0.2u-build裡面就會有openssl-build文件夾
+
+ubuntu18中默認的openssl是1.1.1，我們需要換成我們的openssl-1.0.2g
+
+- ubuntu16.04預設安裝的openssl是1.0.2g，在這邊要換成openssl-1.0.2u
+
+把以前的備份：`sudo mv /usr/bin/openssl /usr/bin/openssl.old`
+
+建立新的軟連接：`sudo ln -s /home/openssl-1.0.2u-build/openssl-build/bin/openssl /usr/bin/openssl`
+
+編輯鏈接文件：`sudo vim /etc/ld.so.conf.d/libc.conf`
+
+- 在libc.conf文件中添加：/usr/openssl-1.0.2u-build/openssl-build/lib  
+- 重新加載配置：ldconfig，`sudo ldconfig`
+
+<h2 id="5.7">準備openssl-target</h2>
+
+解壓縮，`sudo tar zxvf openssl-1.0.2u.tar.gz`
+
+`sudo mv openssl-1.0.2u openssl-1.0.2u-target`
+
+`cd openssl-1.0.2u-target`
+
+設置編譯環境：`sudo ./config no-asm --shared --cross-compile-prefix=aarch64-linux-gnu- --prefix=/home/openssl-1.0.2u-target/openssl-target`
+
+- `no-asm` ：加上 no-asm 表示不使用彙編代碼加速編譯，不然會報錯
+- `--cross-compile`： 指定交叉編譯鏈的前綴，這樣在交叉編譯openssl就會使用我們的交叉編譯鏈進行交叉編譯了
+- `--prefix`: 已經是交叉編譯後的路徑
+
+交叉編譯後是在32位的板子上運行的話，要把編譯後生成的Makefile中有兩處是-m64 的標記要刪除
+
+執行編譯安裝：make && make install
+
 
 <h2 id="5.6">編譯python-build</h2>
 
@@ -3525,7 +3869,7 @@ numpy==1.24.1
 
 安裝pip: `sudo ./python3 get-pip.py`
 
-將該python-build添加到環境變量，設置為build主機上默認的python: export PATH=/home/python-build/bin:$PATH
+將該python-build添加到環境變量，設置為build主機上默認的python: export PATH=$PATH:/home/python-build/bin
 
 安裝Cython: `sudo pip3 install Cython`
 
@@ -3541,6 +3885,38 @@ numpy==1.24.1
 
 創建文件夾：`sudo mkdir /home/python-target`
 
+(將之前準備的openssl-targer、zlib-targer、cytpes-targer的頭文件和鏈接庫複製到/home/python-targer)
+
+```bash
+cp -rfp /home/zlib-1.2.11-target/zlib-target/* /home/python-target/
+
+cp -rfp /home/libffi-3.2.1-target/libffi-target/* /home/python-target/
+
+cp -rfp /home/openssl-1.0.2g-target/openssl-target/* /home/python-target/
+```
+
+在 `Makefile.pre.in` 中設置 `CFLAGS` 與 `LDFLAGS`
+
+- 設置 `CFLAGS: CFLAGS="-I/home/python-target/include -I/home/python-target/include/python3.5m -L/home/python-target/lib"` 
+- 設置 `LDFLAGS: LDFLAGS="-L/home/python-target/lib"`
+
+設置編譯環境
+
+```bash
+./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-linux-gnu-ar RANLIB=aarch64-linux-gnu-ranlib --host=aarch64-linux-gnu --build=x86_64-linux-gnu --target=aarch64-linux-gnu --disable-ipv6 ac_cv_file__dev_ptmx=yes ac_cv_file__dev_ptc=yes --prefix=/home/python-target --without-ensurepip
+```
+
+- Ubuntu上必須要有相同版本的python，否則會有下面的報錯
+
+    ```bash
+    checking for python3.8... no
+    checking for python3... python3
+    checking for python interpreter for cross build... configure: error: python3.8 interpreter not found
+    ```
+
+- 如上方python-build後，要將其設置到環境變數中，這樣在編譯python-target時才能找到相對應使用的python版本
+
+編譯：`make HOSTPYTHON=/home/python-build/bin/python3 HOSTPGEN=/home/python-3.8.0-build/Parser/pgen`
 
 
 
