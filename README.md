@@ -3775,6 +3775,11 @@ numpy==1.24.1
 
 <h2 id="5.3">交叉編譯的準備工作</h2>
 
+build主机是我新安装的一个ubuntu18的新虚拟机，所以连gcc都没有的
+
+- 安裝gcc: `sudo apt-get install gcc-8 -y`
+- 將gcc-8指定成默認的gcc: `sudo ln -s /usr/bin/gcc-8 /usr/bin/gcc`
+
 安裝cmake:  sudo apt-get install make cmake -y
 
 安裝libffi-dev 交叉編譯python 需要的依賴:   sudo apt-get install libffi-dev
@@ -3848,28 +3853,95 @@ ubuntu18中默認的openssl是1.1.1，我們需要換成我們的openssl-1.0.2g
 - `--cross-compile`： 指定交叉編譯鏈的前綴，這樣在交叉編譯openssl就會使用我們的交叉編譯鏈進行交叉編譯了
 - `--prefix`: 已經是交叉編譯後的路徑
 
-交叉編譯後是在32位的板子上運行的話，要把編譯後生成的Makefile中有兩處是-m64 的標記要刪除
+- Note: `--cross-compile-prefix=aarch64-linux-gnu-` 要用絕對路徑make的時候才不會報錯找不到`aarch64-linux-gnu-gcc`
+    `--cross-compile-prefix=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-`
+
+
+交叉編譯後是在32位的板子上運行的話，要把編譯後生成的Makefile中有兩處是-m64 的標記要刪除 `sed -i 's/-m64//' Makefile`
 
 執行編譯安裝：make && make install
 
+<h2 id="5.8">準備zlib-build</h2>
 
-<h2 id="5.6">編譯python-build</h2>
+[zlib source code](https://www.zlib.net/)
 
-解壓源碼：`tar zxvf Python-3.8.0.tgz`
+解壓源碼包：`sudo tar zxvf zlib-1.2.11.tar.gz`
 
-改名：`mv Python-3.5.2 python-3.5.2-build`
+改名：`mv zlib-1.2.11 zlib-1.2.11-build`
 
-`cd /home/wengweiting/Downloads/Python-3.8.0-build/`
+`cd zlib-1.2.11-build`
 
-設置編譯環境，`./configure --prefix=/home/python-build`
+設置編譯環境：`sudo ./configure --prefix=/home/zlib-1.2.11-build/zlib-build`
 
-執行安裝編譯：`make` && `sudo make (alt)install`
+執行編譯安裝：`sudo make && sudo make install`
+
+<h2 id="5.9">準備zlib-target</h2>
+
+解壓源碼包：`sudo tar zxvf zlib-1.2.11.tar.gz`
+
+改名：`sudo mv zlib-1.2.11 zlib-1.2.11-target`
+
+`cd zlib-1.2.11-target`
+
+設置交叉編譯器：`export CC=aarch64-linux-gnu-gcc` 通過export 設置的環境變量都是臨時一次性的，當shell窗口關閉了就失效了
+
+設置編譯環境：`sudo ./configure --prefix=/home/zlib-1.2.11-target/zlib-target --enable-shared`
+
+執行編譯安裝：`sudo make && sudo make install`
+
+<h2 id="5.10">準備c*-build</h2>
+
+已經在準備工作中做了：`sudo apt-get install libffi-dev` 
+
+<h2 id="5.11">準備c*-target</h2>
+
+[libffi source code](https://sourceware.org/libffi/)
+
+解壓源碼包 `sudo tar zxvf libffi-3.4.4.tar.gz`
+
+改名：`sudo mv libffi-3.4.4 libffi-3.4.4-target`
+
+`cd libffi-3.4.4-target`
+
+設置交叉編譯器：`export CC=aarch64-linux-gnu-gcc`
+
+設置編譯環境：`sudo ./configure --host=aarch64-linux-gnu --build=x86_64-linux-gnu target=aarch64-linux-gnu --enable-shared --prefix=/home/libffi-3.4.4-target/libffi-target`
+
+執行編譯安裝：`sudo make && sudo make install`
+
+<h2 id="5.12">編譯python-build</h2>
+
+[Python Source](https://www.python.org/ftp/python)
+
+解壓源碼：`sudo tar zxvf Python-3.8.0.tgz`
+
+改名：`sudo mv Python-3.8.0 Python-3.8.0-build`
+
+`cd Python-3.8.0-build`
+
+修改Modules/Setup文件：`sudo vim Modules/Setup`
+
+- 修改關於openssl部分
+
+    ![tutorial_img09](./Tutorial/image/tutorial_img09.PNG)
+
+- 修改關於zlib部分
+
+    ![tutorial_img10](./Tutorial/image/tutorial_img10.PNG)
+
+改為默認的編譯器：`export CC=`
+
+設置編譯環境，`sudo ./configure --prefix=/home/python-build --without-ensurepip`
+
+- `--without-ensurepip`：不安裝pip，因為默認安裝的pip版本太低了，所以一會我們自己安裝pip
+
+執行安裝編譯：`sudo make` && `sudo make install`
 
 下載pip文件：`sudo curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py`
 
 安裝pip: `sudo ./python3 get-pip.py`
 
-將該python-build添加到環境變量，設置為build主機上默認的python: export PATH=$PATH:/home/python-build/bin
+將該python-build添加到環境變量，設置為build主機上默認的python: `export PATH=$PATH:/home/python-build/bin`
 
 安裝Cython: `sudo pip3 install Cython`
 
@@ -3877,9 +3949,9 @@ ubuntu18中默認的openssl是1.1.1，我們需要換成我們的openssl-1.0.2g
 
 <h2 id="5.7">編譯python-target</h2>
 
-解壓源碼包：`sudo tar zxvf Python-3.8.0.tgz `
+解壓源碼包：`sudo tar zxvf Python-3.8.0.tgz`
 
-改名：`mv Python-3.8.0 Python-3.8.0-target`
+改名：`sudo mv Python-3.8.0 Python-3.8.0-target`
 
 `cd Python-3.8.0-target`
 
@@ -3888,22 +3960,44 @@ ubuntu18中默認的openssl是1.1.1，我們需要換成我們的openssl-1.0.2g
 (將之前準備的openssl-targer、zlib-targer、cytpes-targer的頭文件和鏈接庫複製到/home/python-targer)
 
 ```bash
-cp -rfp /home/zlib-1.2.11-target/zlib-target/* /home/python-target/
+sudo cp -rfp /home/zlib-1.2.11-target/zlib-target/* /home/python-target/
 
-cp -rfp /home/libffi-3.2.1-target/libffi-target/* /home/python-target/
+sudo cp -rfp /home/libffi-3.4.4-target/libffi-target/* /home/python-target/
 
-cp -rfp /home/openssl-1.0.2g-target/openssl-target/* /home/python-target/
+sudo cp -rfp /home/openssl-1.0.2g-target/openssl-target/* /home/python-target/
 ```
 
 在 `Makefile.pre.in` 中設置 `CFLAGS` 與 `LDFLAGS`
 
-- 設置 `CFLAGS: CFLAGS="-I/home/python-target/include -I/home/python-target/include/python3.5m -L/home/python-target/lib"` 
+- 設置 `CFLAGS: CFLAGS="-I/home/python-target/include -I/home/python-target/include/python3.8m -L/home/python-target/lib"` 
 - 設置 `LDFLAGS: LDFLAGS="-L/home/python-target/lib"`
+
+修改Modules/Setup文件：`sudo vim Modules/Setup`
+
+- 修改關於openssl部分
+
+    ```
+    # Socket module helper for socket(2)
+    _socket socketmodule.c
+
+    # Socket module helper for SSL support; you must comment out the other
+    # socket line above, and possibly edit the SSL variable:
+    SSL=/home/python-target
+    _ssl _ssl.c \
+        -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+        -L$(SSL)/lib -lssl -lcrypto
+    ```
+
+- 修改關於zlib部分
+
+    `zlib zlibmodule.c -I/home/python-target/include -L/home/python-target/lib -lz`
 
 設置編譯環境
 
+`export PATH=$PATH:/home/python-build/bin/`
+
 ```bash
-./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-linux-gnu-ar RANLIB=aarch64-linux-gnu-ranlib --host=aarch64-linux-gnu --build=x86_64-linux-gnu --target=aarch64-linux-gnu --disable-ipv6 ac_cv_file__dev_ptmx=yes ac_cv_file__dev_ptc=yes --prefix=/home/python-target --without-ensurepip
+sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-linux-gnu-ar RANLIB=aarch64-linux-gnu-ranlib --host=aarch64-linux-gnu --build=x86_64-linux-gnu --target=aarch64-linux-gnu --disable-ipv6 ac_cv_file__dev_ptmx=yes ac_cv_file__dev_ptc=yes --prefix=/home/python-target --without-ensurepip
 ```
 
 - Ubuntu上必須要有相同版本的python，否則會有下面的報錯
