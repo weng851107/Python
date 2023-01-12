@@ -50,6 +50,20 @@ If there is related infringement or violation of related regulations, please con
   - [Scope](#4.23)
   - [Modules](#4.24)
 - [交叉編譯ARM架構Python](#5)
+  - [交叉編譯介紹](#5.1)
+  - [python及其第三方庫的交叉編譯背景](#5.2)
+  - [交叉編譯的準備工作](#5.3)
+  - [交叉編譯python及其第三方的思路](#5.4)
+  - [準備交叉編譯工具](#5.5)
+  - [準備openssl-build](#5.6)
+  - [準備openssl-target](#5.7)
+  - [準備zlib-build](#5.8)
+  - [準備zlib-target](#5.9)
+  - [準備c*-build](#5.10)
+  - [準備c*-target](#5.11)
+  - [編譯python-build](#5.12)
+  - [編譯python-target](#5.13)
+  - [通過crossenv交叉編譯第三方庫例如：numpy](#5.14)
 
 
 
@@ -3947,7 +3961,7 @@ ubuntu18中默認的openssl是1.1.1，我們需要換成我們的openssl-1.0.2g
 
 測試：python3
 
-<h2 id="5.7">編譯python-target</h2>
+<h2 id="5.13">編譯python-target</h2>
 
 解壓源碼包：`sudo tar zxvf Python-3.8.0.tgz`
 
@@ -4000,7 +4014,7 @@ sudo cp -rfp /home/openssl-1.0.2g-target/openssl-target/* /home/python-target/
 sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-linux-gnu-ar RANLIB=aarch64-linux-gnu-ranlib --host=aarch64-linux-gnu --build=x86_64-linux-gnu --target=aarch64-linux-gnu --disable-ipv6 ac_cv_file__dev_ptmx=yes ac_cv_file__dev_ptc=yes --prefix=/home/python-target --without-ensurepip
 ```
 
-- Ubuntu上必須要有相同版本的python，否則會有下面的報錯
+- Ubuntu上必須要有相同版本的python，否則會有下面的報錯。根據下面方式把python-build加入環境變數後，似乎還是認不到，會報 `python3.8 interpreter not found` 錯誤，所以直接再build一次Ubuntu使用的版本，不加 `--prefix` 的參數
 
     ```bash
     checking for python3.8... no
@@ -4010,7 +4024,67 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 - 如上方python-build後，要將其設置到環境變數中，這樣在編譯python-target時才能找到相對應使用的python版本
 
-編譯：`make HOSTPYTHON=/home/python-build/bin/python3 HOSTPGEN=/home/python-3.8.0-build/Parser/pgen`
+- 修改原先python3的軟連接會報的錯
 
+    https://blog.csdn.net/qq_33976344/article/details/120113114
+
+    ```bash
+    wengweiting@ubuntu:~$ python3.8 -V
+    Traceback (most recent call last):
+    File "/usr/lib/command-not-found", line 27, in <module>
+        from CommandNotFound.util import crash_guard
+    ModuleNotFoundError: No module named 'CommandNotFound'
+    ```
+
+- 修改指令為此才沒報錯?? --> 為了可讀性才換行
+
+    [缺少readelf這個文件](https://www.cnblogs.com/zl1991/p/16134476.html)
+
+    ```bash
+    sudo ./configure \
+    CC=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-gcc \
+    CXX=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-g++ \
+    AR=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-ar \
+    RANLIB=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-ranlib \
+    READELF=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-readelf \
+    --host=aarch64-linux-gnu \
+    --build=x86_64-linux-gnu \
+    --target=aarch64-linux-gnu \
+    --disable-ipv6 \
+    ac_cv_file__dev_ptmx=yes \
+    ac_cv_file__dev_ptc=yes \
+    --prefix=/home/python-target \
+    --without-ensurepip
+    ```
+
+    ```bash
+    sudo ./configure CC=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-gcc CXX=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-g++ AR=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-ar RANLIB=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-ranlib READELF=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-readelf --host=aarch64-linux-gnu --build=x86_64-linux-gnu --target=aarch64-linux-gnu --disable-ipv6 ac_cv_file__dev_ptmx=yes ac_cv_file__dev_ptc=yes --prefix=/home/python-target --without-ensurepip
+    ```
+
+編譯：`sudo make HOSTPYTHON=/home/python-build/bin/python3 HOSTPGEN=/home/python-3.8.0-build/Parser/pgen`
+
+- ld error about zlib?? --> 把修改Modules/Setup文件步驟中的zlib步驟取消
+
+    ```bash
+    Modules/symtablemodule.o  Modules/socketmodule.o  Modules/_ssl.o  Modules/zlibmodule.o  Modules/xxsubtype.o Python/frozen.o
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-gcc  "-L/home/python-target/lib"   -Xlinker -export-dynamic -o python Programs/python.o libpython3.8.a -lcrypt -lpthread -ldl  -lpthread -lutil -lm -L/home/python-target/lib -lssl -lcrypto  -L/home/python-target/lib -lz   -lm 
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/../lib/gcc/aarch64-linux-gnu/10.2.1/../../../../aarch64-linux-gnu/bin/ld: skipping incompatible /home/python-target/lib/libz.so when searching for -lz
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/../lib/gcc/aarch64-linux-gnu/10.2.1/../../../../aarch64-linux-gnu/bin/ld: skipping incompatible /home/python-target/lib/libz.a when searching for -lz
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/../lib/gcc/aarch64-linux-gnu/10.2.1/../../../../aarch64-linux-gnu/bin/ld: skipping incompatible /home/python-target/lib/libz.so when searching for -lz
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/../lib/gcc/aarch64-linux-gnu/10.2.1/../../../../aarch64-linux-gnu/bin/ld: skipping incompatible /home/python-target/lib/libz.a when searching for -lz
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/../lib/gcc/aarch64-linux-gnu/10.2.1/../../../../aarch64-linux-gnu/bin/ld: skipping incompatible /home/python-target/lib/libz.so when searching for -lz
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/../lib/gcc/aarch64-linux-gnu/10.2.1/../../../../aarch64-linux-gnu/bin/ld: skipping incompatible /home/python-target/lib/libz.a when searching for -lz
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/../lib/gcc/aarch64-linux-gnu/10.2.1/../../../../aarch64-linux-gnu/bin/ld: cannot find -lz
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/../lib/gcc/aarch64-linux-gnu/10.2.1/../../../../aarch64-linux-gnu/bin/ld: skipping incompatible /home/python-target/lib/libz.so when searching for -lz
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/../lib/gcc/aarch64-linux-gnu/10.2.1/../../../../aarch64-linux-gnu/bin/ld: skipping incompatible /home/python-target/lib/libz.so when searching for -lz
+    /usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/../lib/gcc/aarch64-linux-gnu/10.2.1/../../../../aarch64-linux-gnu/bin/ld: skipping incompatible /home/python-target/lib/libz.so when searching for -lz
+    collect2: error: ld returned 1 exit status
+    Makefile:581: recipe for target 'python' failed
+    make: *** [python] Error 1
+    ```
+
+執行：`make install HOSTPYTHON=/home/python-build/bin/python3`
+
+<h2 id="5.14">通過crossenv交叉編譯第三方庫例如：numpy</h2>
 
 
