@@ -4061,7 +4061,7 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
     sudo ./configure CC=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-gcc CXX=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-g++ AR=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-ar RANLIB=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-ranlib READELF=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-readelf --host=aarch64-linux-gnu --build=x86_64-linux-gnu --target=aarch64-linux-gnu --disable-ipv6 ac_cv_file__dev_ptmx=yes ac_cv_file__dev_ptc=yes --prefix=/home/python-target --without-ensurepip
     ```
 
-編譯：`sudo make HOSTPYTHON=/home/python-build/bin/python3 HOSTPGEN=/home/python-3.8.0-build/Parser/pgen`
+編譯：`sudo make HOSTPYTHON=/home/python-build/bin/python3 HOSTPGEN=/home/Python-3.8.0-build/Parser/pgen`
 
 - ld error about zlib?? --> 把修改Modules/Setup文件步驟中的zlib步驟取消
 
@@ -4083,8 +4083,64 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
     make: *** [python] Error 1
     ```
 
-執行：`make install HOSTPYTHON=/home/python-build/bin/python3`
+執行：`sudo make install HOSTPYTHON=/home/python-build/bin/python3`
 
 <h2 id="5.14">通過crossenv交叉編譯第三方庫例如：numpy</h2>
+
+在build主機上使用python-build搭建python-target的虛擬環境，然後再虛擬環境中打包python-target的第三方庫，這里以numpy為例：因為numpy是需要經過交叉編譯才能使用的
+
+`cd /home/python-build/bin`
+
+安裝crossenv: `./pip3 install crossenv`
+
+使用crossenv代表python-target的虛擬環境：`./python3 -m crossenv --without-pip /home/python-target/bin/python3 cross_venv`
+
+`cd cross_venv/cross/bin`
+
+激活虛擬環境：`source activate`
+
+下載pip文件：`sudo curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py`
+
+安裝pip: `sudo ./python3 get-pip.py`
+
+在cross_venv這個虛擬環境中的安裝Cython：`sudo ./pip3 install Cython`
+
+創建文件夾用來存放編譯後的第三方：`sudo mkdir /home/python-target_lib`
+
+創建requestments.txt：`vim requirements.txt` 裡面寫上numpy
+
+![tutorial_img11](./Tutorial/image/tutorial_img11.PNG)
+
+交叉編譯第三方庫成為.whl格式的安裝包：`sudo ./pip3 wheel --wheel-dir /home/python-target_lib -r requirements.txt`
+
+驗證：`cd /home/python-target_lib`
+
+![tutorial_img12](./Tutorial/image/tutorial_img12.PNG)
+
+使用crossenv交叉編譯後的numpy第三方庫的後綴是linux_arm，而我們的目標板子是armv7l的
+
+- (目前當參考)所以這裡我們要手動的將 `numpy-1.18.5-cp35-cp35m-linux_arm.whl` 改為 `numpy-1.18.5-cp35-cp35m-linux_armv7l.whl`。不然會報錯。
+
+<h2 id="5.15">移植到目標板子</h2>
+
+將編譯好的 `python-target` 打包和 `numpy-1.18.5-cp35-cp35m-linux_arm.whl` 移植到目標板子上
+
+壓縮python-target: `tar zcvf python-target.tar.gz python-target`
+
+通過ftp工具，將 `python-target.tar.gz` 和 `numpy-1.18.5-cp35-cp35m-linux_arm.whl` ,移植到目標板子的/home下
+
+解壓python-target: `tar -zvx -f python_3.8.0_arm.tar.gz`
+
+`cd /home/python-target/bin`
+
+驗證在目標板子上運行python3
+
+![tutorial_img13](./Tutorial/image/tutorial_img13.PNG)
+
+驗證交叉編譯的第三方(arm-platform上可連網的話才可安裝pip，否則只能在前面編譯python-target時執行configure不要加 `--without-ensurepip`)
+
+- 下載pip文件：`curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py`
+
+- 安裝pip: `sudo ./python3 get-pip.py`
 
 
