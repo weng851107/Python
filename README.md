@@ -76,10 +76,7 @@ If there is related infringement or violation of related regulations, please con
   - [File Open](#6.1)
   - [Read Files](#6.2)
   - [Write/Create Files](#6.3)
-
-
-
-
+  - [Delete Files](#6.4)
 
 
 <h1 id="0">Note</h1>
