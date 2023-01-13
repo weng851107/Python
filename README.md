@@ -49,6 +49,13 @@ If there is related infringement or violation of related regulations, please con
   - [Iterators](#4.22)
   - [Scope](#4.23)
   - [Modules](#4.24)
+  - [Datetime](#4.25)
+  - [Math](#4.26)
+  - [JSON](#4.27)
+  - [RegEx](#4.28)
+  - [PIP](#4.29)
+  - [Try Except](#4.30)
+  - [User Input](#4.31)
 - [交叉編譯ARM架構Python](#5)
   - [交叉編譯介紹](#5.1)
   - [python及其第三方庫的交叉編譯背景](#5.2)
@@ -64,6 +71,14 @@ If there is related infringement or violation of related regulations, please con
   - [編譯python-build](#5.12)
   - [編譯python-target](#5.13)
   - [通過crossenv交叉編譯第三方庫例如：numpy](#5.14)
+  - [移植到目標板子](#5.15)
+- [File Handling](#6)
+  - [File Open](#6.1)
+  - [Read Files](#6.2)
+  - [Write/Create Files](#6.3)
+
+
+
 
 
 
@@ -1305,6 +1320,16 @@ print("I want to pay {2} dollars for {0} pieces of item {1}.".format(quantity, i
 I want to pay 49.95 dollars for 3 pieces of item 567.
 '''
 ```
+
+You can also use named indexes by entering a name inside the curly brackets `{carname}`, but then you must use names when you pass the parameter values `txt.format(carname = "Ford")`:
+
+```Python
+print("I have a {carname}, it is a {model}.".format(carname = "Ford", model = "Mustang"))
+'''
+I have a Ford, it is a Mustang.
+'''
+```
+
 
 ### Escape Characters - `\`
 
@@ -3737,7 +3762,345 @@ print (person1["age"])
 '''
 ```
 
+<h2 id="4.25">Datetime</h2>
 
+Import a module named `datetime` to work with dates as date objects
+
+The date contains `year`, `month`, `day`, `hour`, `minute`, `second`, and `microsecond`.
+
+```Python
+import datetime
+
+x = datetime.datetime.now()
+
+print(x)
+print(x.year)
+print(x.strftime("%A"))
+
+'''
+2023-01-13 15:57:48.011913
+2023
+Friday
+'''
+```
+
+Use the `datetime()` class (constructor) of the `datetime` module to create a date.
+
+```Python
+import datetime
+
+x = datetime.datetime(2020, 5, 17)
+
+print(x)
+
+'''
+2020-05-17 00:00:00
+'''
+```
+
+The datetime object has a method, `strftime()`, for formatting date objects into readable strings.
+
+![tutorial_img09](./Tutorial/image/tutorial_img09.PNG)
+
+![tutorial_img10](./Tutorial/image/tutorial_img10.PNG)
+
+<h2 id="4.26">Math</h2>
+
+#### Built-in Math Functions
+
+The `min()` and `max()` functions can be used to find the lowest or highest value in an iterable:
+
+The `abs()` function returns the absolute (positive) value of the specified number:
+
+The `pow(x, y)` function returns the value of x to the power of y ($x^y$).
+
+```Python
+x = min(5, 10, 25)
+y = max(5, 10, 25)
+print(x)
+print(y)
+'''
+5
+25
+'''
+
+x = abs(-7.25)
+print(x)
+'''
+7.25
+'''
+
+x = pow(4, 3)
+print(x)
+'''
+64
+'''
+```
+
+#### The Math Module - `import math`
+
+https://www.w3schools.com/python/module_math.asp
+
+<h2 id="4.27">JSON</h2>
+
+JSON is text, written with JavaScript object notation.
+
+Python has a built-in package called `json`, which can be used to work with JSON data. - `import json`
+
+#### Convert from JSON to Python - `json.loads()`
+
+```Python
+import json
+
+# some JSON:
+x =  '{ "name":"John", "age":30, "city":"New York"}'
+
+# parse x:
+y = json.loads(x)
+
+# the result is a Python dictionary:
+print(y["age"])
+
+'''
+30
+'''
+```
+
+#### Convert from Python to JSON - `json.dumps()`
+
+```Python
+import json
+
+# a Python object (dict):
+x = {
+    "name": "John",
+    "age": 30,
+    "city": "New York"
+}
+
+# convert into JSON:
+y = json.dumps(x)
+
+# the result is a JSON string:
+print(y)
+
+'''
+{"name": "John", "age": 30, "city": "New York"}
+'''
+```
+
+---
+
+Python objects are converted into the JSON (JavaScript) equivalent:
+
+![tutorial_img11](./Tutorial/image/tutorial_img11.PNG)
+
+Format the Result - `indent`, `separators`, `sort_keys`
+
+```Python
+import json
+
+x = {
+  "name": "John",
+  "age": 30,
+  "married": True,
+  "divorced": False,
+  "children": ("Ann","Billy"),
+  "pets": None,
+  "cars": [
+    {"model": "BMW 230", "mpg": 27.5},
+    {"model": "Ford Edge", "mpg": 24.1}
+  ]
+}
+
+
+print(json.dumps(x, indent=4, separators=(". ", " = ")))
+'''
+{
+    "name" = "John".
+    "age" = 30.
+    "married" = true.
+    "divorced" = false.
+    "children" = [
+        "Ann".
+        "Billy"
+    ].
+    "pets" = null.
+    "cars" = [
+        {
+            "model" = "BMW 230".
+            "mpg" = 27.5
+        }.
+        {
+            "model" = "Ford Edge".
+            "mpg" = 24.1
+        }
+    ]
+}'''
+
+print(json.dumps(x, indent=4, sort_keys=True))
+'''
+{
+    "age": 30,
+    "cars": [
+        {
+            "model": "BMW 230",
+            "mpg": 27.5
+        },
+        {
+            "model": "Ford Edge",
+            "mpg": 24.1
+        }
+    ],
+    "children": [
+        "Ann",
+        "Billy"
+    ],
+    "divorced": false,
+    "married": true,
+    "name": "John",
+    "pets": null
+}
+'''
+```
+
+<h2 id="4.28">RegEx</h2>
+
+`import re`
+
+#### RegEx Functions - findall, search, split, sub
+
+![tutorial_img12](./Tutorial/image/tutorial_img12.PNG)
+
+The `findall()` function returns a list containing all matches, but if no matches are found, an empty list is returned.
+
+```Python
+import re
+
+txt = "The rain in Spain"
+
+x = re.findall("ai", txt)
+print(x)
+'''
+['ai', 'ai']
+'''
+
+x = re.findall("Portugal", txt)
+print(x)
+'''
+[]
+'''
+```
+
+The `search()` function searches the string for a match, and returns a Match object if there is a match.
+
+If there is more than one match, only the first occurrence of the match will be returned:
+
+If no matches are found, the value `None` is returned:
+
+```Python
+import re
+
+txt = "The rain in Spain"
+
+x = re.search("\s", txt)
+print("The first white-space character is located in position:", x.start())
+'''
+The first white-space character is located in position: 3
+'''
+
+x = re.search("Portugal", txt)
+print(x)
+'''
+None
+'''
+```
+
+- `.span()` returns a tuple containing the start-, and end positions of the match.
+- `.string` returns the string passed into the function
+- `.group()` returns the part of the string where there was a match
+
+    ```Python
+    import re
+
+    txt = "The rain in Spain"
+
+    x = re.search(r"\bS\w+", txt)
+    print(x.span())
+    '''
+    (12, 17)
+    '''
+
+    print(x.string)
+    '''
+    The rain in Spain
+    '''
+
+    print(x.group())
+    '''
+    Spain
+    '''
+    ```
+
+The `split()` function returns a list where the string has been split at each match:
+
+You can control the number of occurrences by specifying the `maxsplit` parameter:
+
+```Python
+import re
+
+txt = "The rain in Spain"
+
+x = re.split("\s", txt)
+print(x)
+'''
+['The', 'rain', 'in', 'Spain']
+'''
+
+x = re.split("\s", txt, 1)
+print(x)
+'''
+['The', 'rain in Spain']
+'''
+```
+
+The `sub()` function replaces the matches with the text of your choice:
+
+You can control the number of replacements by specifying the count parameter:
+
+```Python
+import re
+
+txt = "The rain in Spain"
+
+x = re.sub("\s", "9", txt)
+print(x)
+'''
+The9rain9in9Spain
+'''
+
+x = re.sub("\s", "9", txt, 2)
+print(x)
+'''
+The9rain9in Spain
+'''
+```
+
+#### Metacharacters
+
+![tutorial_img13](./Tutorial/image/tutorial_img13.PNG)
+
+#### Special Sequences
+
+A special sequence is a \ followed by one of the characters in the list below, and has a special meaning:
+
+![tutorial_img14](./Tutorial/image/tutorial_img14.PNG)
+
+#### Sets
+
+A set is a set of characters inside a pair of square brackets `[]` with a special meaning:
+
+![tutorial_img15](./Tutorial/image/tutorial_img15.PNG)
 
 <h1 id="5">交叉編譯ARM架構Python</h1>
 
@@ -3761,6 +4124,85 @@ Source code 的 variable=@value@ in Makefiles
   - `autoconf` usually does `configures.ac ---> configure`
   - the `configure` script itself often does `Makefile.config.in ---> Makefile.config` which in turn is included by a `Makefile` which then is read by `make` for it to determine how to build your project.
   - `configure`, `Makefile` and `Makefile.config.in` are usually shipped with the source code.
+
+<h2 id="4.29">PIP</h2>
+
+**PIP** is a package manager for Python packages, and a **package** contains all the files you need for a module.
+
+[套件管理工具 pip 指令用法](#3.3)
+
+<h2 id="4.30">Try Except</h2>
+
+The `try` block lets you test a block of code for errors.
+
+The `except` block lets you handle the error.
+
+The `else` block lets you execute code when there is no error.
+
+The `finally` block lets you execute code, regardless of the result of the try- and except blocks.
+
+```Python
+try:
+    print("Hello")
+except:
+    print("Something went wrong")
+else:
+    print("Nothing went wrong")
+
+'''
+Hello
+Nothing went wrong
+'''
+```
+
+```Python
+try:
+    print(x)
+except:
+    print("Something went wrong")
+finally:
+    print("The 'try except' is finished")
+
+'''
+Something went wrong
+The 'try except' is finished
+'''
+```
+
+Raise an exception - `raise`
+
+```Python
+x = -1
+
+if x < 0:
+    raise Exception("Sorry, no numbers below zero")
+
+'''
+Traceback (most recent call last):
+  File ".\test.py", line 4, in <module>
+    raise Exception("Sorry, no numbers below zero")
+Exception: Sorry, no numbers below zero
+'''
+```
+
+<h2 id="4.31">User Input</h2>
+
+Python allows for user input.
+
+- Python 3.6 uses the `input()` method.
+
+    ```Python
+    username = input("Enter username:")
+    print("Username is: " + username)
+    ```
+
+- Python 2.7 uses the `raw_input()` method.
+
+    ```Python
+    username = raw_input("Enter username:")
+    print("Username is: " + username)
+    ```
+
 
 
 
@@ -3937,11 +4379,11 @@ ubuntu18中默認的openssl是1.1.1，我們需要換成我們的openssl-1.0.2g
 
 - 修改關於openssl部分
 
-    ![tutorial_img09](./Tutorial/image/tutorial_img09.PNG)
+    ![arm_img00](./image/arm_img00.PNG)
 
 - 修改關於zlib部分
 
-    ![tutorial_img10](./Tutorial/image/tutorial_img10.PNG)
+    ![arm_img01](./image/arm_img01.PNG)
 
 改為默認的編譯器：`export CC=`
 
@@ -4109,13 +4551,13 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 創建requestments.txt：`vim requirements.txt` 裡面寫上numpy
 
-![tutorial_img11](./Tutorial/image/tutorial_img11.PNG)
+![arm__img02](./Tutorial/image/arm_img02.PNG)
 
 交叉編譯第三方庫成為.whl格式的安裝包：`sudo ./pip3 wheel --wheel-dir /home/python-target_lib -r requirements.txt`
 
 驗證：`cd /home/python-target_lib`
 
-![tutorial_img12](./Tutorial/image/tutorial_img12.PNG)
+![arm_img03](./Tutorial/image/arm_img03.PNG)
 
 使用crossenv交叉編譯後的numpy第三方庫的後綴是linux_arm，而我們的目標板子是armv7l的
 
@@ -4135,7 +4577,7 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 驗證在目標板子上運行python3
 
-![tutorial_img13](./Tutorial/image/tutorial_img13.PNG)
+![arm_img04](./image/arm_img04.PNG)
 
 驗證交叉編譯的第三方(arm-platform上可連網的話才可安裝pip，否則只能在前面編譯python-target時執行configure不要加 `--without-ensurepip`)
 
@@ -4144,3 +4586,122 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 - 安裝pip: `sudo ./python3 get-pip.py`
 
 
+
+
+
+<h1 id="6">File Handling</h1>
+
+<h2 id="6.1">File Open</h2>
+
+To open the file, use the built-in `open()` function, and the `open()` function returns a file object.
+
+The `open()` function takes two parameters; `filename`, and `mode`.
+
+```Python
+f = open("demofile.txt", "rt")
+```
+
+- There are four different methods (modes) for opening a file:
+
+    ```bash
+    "r" - Read - Default value. Opens a file for reading, error if the file does not exist
+
+    "a" - Append - Opens a file for appending, creates the file if it does not exist
+
+    "w" - Write - Opens a file for writing, creates the file if it does not exist
+
+    "x" - Create - Creates the specified file, returns an error if the file exists
+    ```
+
+- In addition you can specify if the file should be handled as **binary** or **text** mode
+
+    ```bash
+    "t" - Text - Default value. Text mode
+
+    "b" - Binary - Binary mode (e.g. images)
+    ```
+
+<h2 id="6.2">Read Files</h2>
+
+`read()` method for reading the file:
+
+```Python
+f = open("demofile.txt", "r")
+print(f.read())
+'''
+Hello! Welcome to demofile.txt
+This file is for testing purposes.
+Good Luck!
+'''
+```
+
+By default the `read()` method returns the whole text, but you can also specify how many characters you want to return:
+
+```Python
+f = open("demofile.txt", "r")
+print(f.read(5))
+'''
+Hello
+'''
+```
+
+<h2 id="6.3">Write/Create Files</h2>
+
+Write to an Existing File：
+
+- `"a"` - Append - will append to the end of the file
+
+    ```Python
+    f = open("demofile.txt", "a")
+    f.write("Now the file has more content!")
+    f.close()
+
+    #open and read the file after the appending:
+    f = open("demofile.txt", "r")
+    print(f.read())
+    ```
+
+- `"w"` - Write - will overwrite any existing content
+
+    ```Python
+    f = open("demofile.txt", "w")
+    f.write("Woops! I have deleted the content!")
+    f.close()
+
+    #open and read the file after the appending:
+    f = open("demofile.txt", "r")
+    print(f.read())
+    ```
+
+Create a New File
+
+- `"x"` - Create - will create a file, returns an error if the file exist
+- `"a"` - Append - will create a file if the specified file does not exist
+- `"w"` - Write - will create a file if the specified file does not exist
+
+<h2 id="6.4">Delete Files</h2>
+
+To delete a file, you must import the `OS module`, and run its `os.remove()` function:
+
+```Python
+import os
+os.remove("demofile.txt")
+```
+
+Check if File exist:
+
+```Python
+import os
+
+if os.path.exists("demofile.txt"):
+    os.remove("demofile.txt")
+else:
+    print("The file does not exist")
+```
+
+Delete Folder - `os.rmdir()`
+
+```Python
+import os
+os.rmdir("myfolder")
+```
