@@ -4318,27 +4318,33 @@ ubuntu18中默認的openssl是1.1.1，我們需要換成我們的openssl-1.0.2g
 
 [zlib source code](https://www.zlib.net/)
 
-解壓源碼包：`sudo tar zxvf zlib-1.2.11.tar.gz`
+解壓源碼包：`sudo tar zxvf zlib-1.2.13.tar.gz`
 
-改名：`mv zlib-1.2.11 zlib-1.2.11-build`
+改名：`mv zlib-1.2.13 zlib-1.2.13-build`
 
-`cd zlib-1.2.11-build`
+`cd zlib-1.2.13-build`
 
-設置編譯環境：`sudo ./configure --prefix=/home/zlib-1.2.11-build/zlib-build`
+設置編譯環境：`sudo ./configure --prefix=/home/zlib-1.2.13-build/zlib-build`
 
 執行編譯安裝：`sudo make && sudo make install`
 
 <h2 id="5.9">準備zlib-target</h2>
 
-解壓源碼包：`sudo tar zxvf zlib-1.2.11.tar.gz`
+解壓源碼包：`sudo tar zxvf zlib-1.2.13.tar.gz`
 
-改名：`sudo mv zlib-1.2.11 zlib-1.2.11-target`
+改名：`sudo mv zlib-1.2.13 zlib-1.2.13-target`
 
-`cd zlib-1.2.11-target`
+`cd zlib-1.2.13-target`
 
 設置交叉編譯器：`export CC=aarch64-linux-gnu-gcc` 通過export 設置的環境變量都是臨時一次性的，當shell窗口關閉了就失效了
 
-設置編譯環境：`sudo ./configure --prefix=/home/zlib-1.2.11-target/zlib-target --enable-shared`
+設置編譯環境：`sudo ./configure --prefix=/home/zlib-1.2.13-target/zlib-target --enable-shared`
+
+- zlib的configure不支持設置--host項，因此需要手動更改Makefile，sudo gedit命令打開Makefile文件，將其中的CC、AR、RANLIB都修改為arm-linux交叉編譯器的相關參數
+
+    https://www.cnblogs.com/from-zero/p/12582033.html
+
+    ![arm_img05](./image/arm_img05.PNG)
 
 執行編譯安裝：`sudo make && sudo make install`
 
@@ -4413,7 +4419,7 @@ ubuntu18中默認的openssl是1.1.1，我們需要換成我們的openssl-1.0.2g
 (將之前準備的openssl-targer、zlib-targer、cytpes-targer的頭文件和鏈接庫複製到/home/python-targer)
 
 ```bash
-sudo cp -rfp /home/zlib-1.2.11-target/zlib-target/* /home/python-target/
+sudo cp -rfp /home/zlib-1.2.13-target/zlib-target/* /home/python-target/
 
 sudo cp -rfp /home/libffi-3.4.4-target/libffi-target/* /home/python-target/
 
@@ -4422,7 +4428,7 @@ sudo cp -rfp /home/openssl-1.0.2g-target/openssl-target/* /home/python-target/
 
 在 `Makefile.pre.in` 中設置 `CFLAGS` 與 `LDFLAGS`
 
-- 設置 `CFLAGS: CFLAGS="-I/home/python-target/include -I/home/python-target/include/python3.8m -L/home/python-target/lib"` 
+- 設置 `CFLAGS: CFLAGS="-I/home/python-target/include -I/home/python-target/include/python3.8m -L/home/python-target/lib"`
 - 設置 `LDFLAGS: LDFLAGS="-L/home/python-target/lib"`
 
 修改Modules/Setup文件：`sudo vim Modules/Setup`
@@ -4500,6 +4506,8 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
     sudo ./configure CC=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-gcc CXX=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-g++ AR=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-ar RANLIB=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-ranlib READELF=/usr/local/linaro-aarch64-2020.09-gcc10.2-linux5.4/bin/aarch64-linux-gnu-readelf --host=aarch64-linux-gnu --build=x86_64-linux-gnu --target=aarch64-linux-gnu --disable-ipv6 ac_cv_file__dev_ptmx=yes ac_cv_file__dev_ptc=yes --prefix=/home/python-target --without-ensurepip
     ```
 
+- 要有 `pip` 則不要加 `--without-ensurepip`
+
 編譯：`sudo make HOSTPYTHON=/home/python-build/bin/python3 HOSTPGEN=/home/Python-3.8.0-build/Parser/pgen`
 
 - ld error about zlib?? --> 把修改Modules/Setup文件步驟中的zlib步驟取消
@@ -4522,7 +4530,13 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
     make: *** [python] Error 1
     ```
 
+- 不可取消掉，pip似乎會用到這個
+
 執行：`sudo make install HOSTPYTHON=/home/python-build/bin/python3`
+
+- Error: "return Command 'lsb_release -a' returned non-zero exit status 1"
+
+    將原先的 `lsb_release` 改名 `sudo mv /usr/bin/lsb_release /usr/bin/lsb_release__`
 
 <h2 id="5.14">通過crossenv交叉編譯第三方庫例如：numpy</h2>
 
@@ -4533,6 +4547,8 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 安裝crossenv: `./pip3 install crossenv`
 
 使用crossenv代表python-target的虛擬環境：`./python3 -m crossenv --without-pip /home/python-target/bin/python3 cross_venv`
+
+- `sudo ./python3 -m crossenv /home/python-target/bin/python3 cross_venv`
 
 `cd cross_venv/cross/bin`
 
@@ -4548,13 +4564,13 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 創建requestments.txt：`vim requirements.txt` 裡面寫上numpy
 
-![arm__img02](./Tutorial/image/arm_img02.PNG)
+![arm_img02](./image/arm_img02.PNG)
 
 交叉編譯第三方庫成為.whl格式的安裝包：`sudo ./pip3 wheel --wheel-dir /home/python-target_lib -r requirements.txt`
 
 驗證：`cd /home/python-target_lib`
 
-![arm_img03](./Tutorial/image/arm_img03.PNG)
+![arm_img03](./image/arm_img03.PNG)
 
 使用crossenv交叉編譯後的numpy第三方庫的後綴是linux_arm，而我們的目標板子是armv7l的
 
@@ -4582,8 +4598,11 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 - 安裝pip: `sudo ./python3 get-pip.py`
 
+在前面編譯python-target時執行configure不要加 `--without-ensurepip` 看起來還是不會有 `pip`，必須要後處理安裝，在arm機台內安裝??
 
+- https://pip.pypa.io/en/latest/installation/
 
+- `python3 -m ensurepip --upgrade`
 
 
 <h1 id="6">File Handling</h1>
