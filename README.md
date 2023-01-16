@@ -4602,7 +4602,19 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 - https://pip.pypa.io/en/latest/installation/
 
+- [is there an option to have get-pip.py installing pip without downloading from internet ?](https://github.com/pypa/pip/issues/2351)
+
 - `python3 -m ensurepip --upgrade`
+
+通過pip安裝numpy第三方庫
+
+- `./pip3 install numpy-1.24.1-cp38-cp38-linux_aarch64.whl`
+
+  - 若有如下圖的報錯，可能是.whl檔的名字需要修改
+
+    ![arm_img06](./image/arm_img06.PNG)
+
+
 
 
 <h1 id="6">File Handling</h1>
