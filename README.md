@@ -4606,6 +4606,8 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 - `python3 -m ensurepip --upgrade`
 
+首先安裝wheel，後面才可利用`pip3 install wheel`來安裝第三方庫
+
 通過pip安裝numpy第三方庫
 
 - `./pip3 install numpy-1.24.1-cp38-cp38-linux_aarch64.whl`
