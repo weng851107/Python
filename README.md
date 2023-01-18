@@ -4546,6 +4546,8 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 安裝crossenv: `./pip3 install crossenv`
 
+- 用於 cross-compile 的 virtual enviroment，與一般x86_x64的不一樣 [Linux python 內建虛擬環境--venv](#3.5)
+
 使用crossenv代表python-target的虛擬環境：`./python3 -m crossenv --without-pip /home/python-target/bin/python3 cross_venv`
 
 - `sudo ./python3 -m crossenv /home/python-target/bin/python3 cross_venv`
