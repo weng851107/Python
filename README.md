@@ -4590,6 +4590,9 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 驗證在目標板子上運行python3
 
+- 將 `python3.8/bin` 與 `python3.8/lib` 加至環境變數
+- 另一方面可以在 xxx.py 中的開頭加上 python3.8執行檔的位置，`#!/sdcard/mmcblk0p9/python-target/bin/python3`
+
 ![arm_img04](./image/arm_img04.PNG)
 
 驗證交叉編譯的第三方(arm-platform上可連網的話才可安裝pip，否則只能在前面編譯python-target時執行configure不要加 `--without-ensurepip`)
@@ -4604,9 +4607,12 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 - [is there an option to have get-pip.py installing pip without downloading from internet ?](https://github.com/pypa/pip/issues/2351)
 
-- `python3 -m ensurepip --upgrade`
+- `python3 -m ensurepip --upgrade` 即可在arm機台內安裝pip
 
-首先安裝wheel，後面才可利用`pip3 install wheel`來安裝第三方庫
+首先安裝wheel，後面才可利用`pip3 install <.whl>`來安裝第三方庫
+
+- 參考上方編譯第三方庫的方式，在requirements.txt中加入 `wheel`，即會生成 `six-1.16.0-py2.py3-none-any.whl`，將其移至機台
+- `pip3 install six-1.16.0-py2.py3-none-any.whl` 即可安裝
 
 通過pip安裝numpy第三方庫
 
@@ -4616,8 +4622,42 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
     ![arm_img06](./image/arm_img06.PNG)
 
+測試numpy庫
 
+```Python
+#!/sdcard/mmcblk0p9/python-target/bin/python3
 
+import numpy as np
+
+arr0 = np.array(40)
+print(arr0)     #只有一個元素的陣列
+'''
+40
+'''
+
+arr1 = np.array([1, 2, 3, 4, 5])
+print(arr1)     #稱為單維或一維的陣列，裡面的值包含1, 2, 3, 4, 5
+'''
+[1 2 3 4 5]
+'''
+
+arr2 = np.array([[1, 2, 3], [4, 5, 6]])
+print(arr2)     #包含一個以上的一維陣列稱為二維陣列，可用來表示矩陣
+'''
+[[1 2 3]
+ [4 5 6]]
+'''
+
+arr3 = np.array([[[1, 2, 3], [4, 5, 6]], [[ 1, 2, 3], [4, 5, 6]]])
+print(arr3)     #包含一個以上的二維陣列稱為三維陣列
+'''
+[[[1 2 3]
+  [4 5 6]]
+
+ [[1 2 3]
+  [4 5 6]]]
+'''
+```
 
 <h1 id="6">File Handling</h1>
 
