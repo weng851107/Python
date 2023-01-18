@@ -4562,15 +4562,35 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
 在cross_venv這個虛擬環境中的安裝Cython：`sudo ./pip3 install Cython`
 
-創建文件夾用來存放編譯後的第三方：`sudo mkdir /home/python-target_lib`
+創建文件夾用來存放編譯後的第三方：`sudo mkdir /home/python3.8.9_lib`
 
 創建requestments.txt：`vim requirements.txt` 裡面寫上numpy
 
 ![arm_img02](./image/arm_img02.PNG)
 
-交叉編譯第三方庫成為.whl格式的安裝包：`sudo ./pip3 wheel --wheel-dir /home/python-target_lib -r requirements.txt`
+交叉編譯第三方庫成為.whl格式的安裝包：`sudo pip3 wheel --wheel-dir /home/python3.8.9_lib -r requirements.txt`
 
-驗證：`cd /home/python-target_lib`
+- 遇到 `Building wheel for hurry.filesize (setup.py) ... error` 的錯誤時，看起來是本機(Ubuntu)沒有安裝 wheel，`sudo pip3 install wheel` 即可解決
+    https://stackoverflow.com/questions/53204916/what-is-the-meaning-of-failed-building-wheel-for-x-in-pip-install
+
+    ```bash
+    Building wheels for collected packages: hurry.filesize, paho-mqtt, qrcode
+    Building wheel for hurry.filesize (setup.py) ... error
+    ERROR: Command errored out with exit status 1:
+    command: /usr/local/bin/python3.8 -u -c 'import sys, setuptools, tokenize; sys.argv[0] = '"'"'/tmp/pip-wheel-k0op2_4f/hurry-filesize/setup.py'"'"'; __file__='"'"'/tmp/pip-wheel-k0op2_4f/hurry-filesize/setup.py'"'"';f=getattr(tokenize, '"'"'open'"'"', open)(__file__);code=f.read().replace('"'"'\r\n'"'"', '"'"'\n'"'"');f.close();exec(compile(code, __file__, '"'"'exec'"'"'))' bdist_wheel -d /tmp/pip-wheel-3kfa92u5
+        cwd: /tmp/pip-wheel-k0op2_4f/hurry-filesize/
+    Complete output (6 lines):
+    usage: setup.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
+        or: setup.py --help [cmd1 cmd2 ...]
+        or: setup.py --help-commands
+        or: setup.py cmd --help
+    
+    error: invalid command 'bdist_wheel'
+    ----------------------------------------
+    ERROR: Failed building wheel for hurry.filesize
+    ```
+
+驗證：`cd /home/python3.8.9_lib`
 
 ![arm_img03](./image/arm_img03.PNG)
 
