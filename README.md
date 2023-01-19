@@ -4644,6 +4644,8 @@ sudo ./configure CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-l
 
     ![arm_img06](./image/arm_img06.PNG)
 
+- 可以這樣安裝的第三方庫會是用python寫的，但有些會是用c寫的，所以必須再拉source code來自行編譯
+
 測試numpy庫
 
 ```Python
