@@ -25,6 +25,8 @@ If there is related infringement or violation of related regulations, please con
   - [Ubuntu python 安裝](#3.4)
   - [Linux python 內建虛擬環境--venv](#3.5)
 - [Python Tutorial](#4)
+  - [Note](#4.0)
+    - [List, Set, Tuple, Dictionary 四種資料型別介紹](#4.0.1)
   - [Syntax](#4.1)
   - [Variables](#4.2)
   - [Data Types](#4.3)
@@ -694,6 +696,26 @@ $
 ```
 
 <h1 id="4">Python Tutorial</h1>
+
+<h2 id="4.0">Note</h2>
+
+<h2 id="4.0.1">List, Set, Tuple, Dictionary 四種資料型別介紹</h2>
+
+1. List（列表）：
+
+    列表是 Python 中最基本的數據結構之一，它是有序的元素集合。列表允許重複的元素，並且可以隨時增加、刪除或修改元素。列表使用方括號（`[]`）表示，例如：`my_list = [1, 2, 3, 4]`。
+
+2. Set（集合）：
+
+    集合是無序的且不重複的元素集合。由於集合中的元素是唯一的，因此它們可以用於去除重複的元素。集合使用大括號（`{}`）表示，例如：`my_set = {1, 2, 3}`。注意，空集合需要使用 `set()` 函數來創建，例如：`empty_set = set()`。
+
+3. Tuple（元組）：
+
+    元組與列表類似，都是有序的元素集合。然而，元組是不可變的，這意味著在創建元組之後，不能對其進行修改（如添加、刪除或更改元素）。元組使用小括號（`()`）表示，例如：`my_tuple = (1, 2, 3, 4)`。
+
+4. Dictionary（字典）：
+
+    字典是一種鍵值對應的數據結構，其中每個鍵都與一個值相關聯。字典中的鍵是唯一的，不能重複。字典可以用於存儲許多類型的數據，例如對象的屬性或者查找表。字典使用大括號（`{}`）表示，但使用冒號（`:`）將鍵與值分隔，例如：`my_dict = {'key1': 'value1', 'key2': 'value2'}`。
 
 <h2 id="4.1">Syntax</h2>
 
