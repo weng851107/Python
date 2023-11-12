@@ -14,6 +14,7 @@ If there is related infringement or violation of related regulations, please con
   - [Telnet](#2.1)
   - [matplotlib極座標應用](#2.2)
   - [tkinter UI](#2.3)
+    - [Playing Cards](#2.3.1)
   - [Uart](#2.4)
   - [Excel](#2.5)
   - [OpenCV](#2.6)
@@ -165,6 +166,14 @@ python內建的tkinter，不是使用其他第三方的套件，所以在其他�
 簡單 tkinter UI 功能介紹：[tkinter_UI.py](./code/tkinter_UI.py)
 
 實際範例：[RadarUI.py](./code/RadarUI.py)
+
+<h3 id="2.3.1">Playing Cards</h3>
+
+按鈕隨機選五張不重複的圖片
+
+- [PlayingCard.py](./code/PlayingCards/PlayingCard.py)
+
+[【Python】使用 PyInstaller 將 Python打包成 exe 檔](https://medium.com/pyladies-taiwan/python-%E5%B0%87python%E6%89%93%E5%8C%85%E6%88%90exe%E6%AA%94-32a4bacbe351)
 
 <h2 id="2.4">Uart</h2>
 
