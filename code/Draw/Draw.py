@@ -10,15 +10,17 @@ WA_G2_OneTime = True
 WA_G3_OneTime = True
 WA_G4_OneTime = True
 
+Figure_Size = 280
+
 filename = "Team.log"
 
 class ImagePickerApp:
     def __init__(self, root, image_folder_Boss, image_folder_G1, image_folder_G2, image_folder_G3, image_folder_G4, image_folder_G5, image_folder_Common):
         self.root = root
         w=1400  #width
-        r=800  #height
-        x=100  #與視窗左上x的距離
-        y=150  #與視窗左上y的距離
+        r=850  #height
+        x=80  #與視窗左上x的距離
+        y=120  #與視窗左上y的距離
         self.root.geometry('%dx%d+%d+%d' % (w,r,x,y))
         self.root.title("[Phison] Draw")
         self.bg = "#FFE5B5"
@@ -69,7 +71,7 @@ class ImagePickerApp:
         for i, image_card_label in enumerate(self.image_card_labels_2_Boss):
             if i < 2:
                 image = Image.open(image_reset)
-                image = image.resize((220, 220))
+                image = image.resize((Figure_Size, Figure_Size))
                 photo = ImageTk.PhotoImage(image)
 
                 image_card_label.configure(image=photo)
@@ -80,7 +82,7 @@ class ImagePickerApp:
         for i, image_card_label in enumerate(self.image_card_labels_2):
             if i < 2:
                 image = Image.open(image_reset)
-                image = image.resize((220, 220))
+                image = image.resize((Figure_Size, Figure_Size))
                 photo = ImageTk.PhotoImage(image)
 
                 image_card_label.configure(image=photo)
@@ -144,7 +146,7 @@ class ImagePickerApp:
         image_phison = "phison.PNG"
 
         image = Image.open(image_phison)
-        image = image.resize((550, 225))
+        image = image.resize((500, 200))
         photo = ImageTk.PhotoImage(image)
 
         self.image_phison_label.configure(image=photo)
@@ -247,7 +249,7 @@ class ImagePickerApp:
             if i < 2: #len(self.selected_images_Boss)
                 image_filename = os.path.join(self.image_folder_Boss, self.selected_images_Boss.pop())
                 image = Image.open(image_filename)
-                image = image.resize((220, 220))
+                image = image.resize((Figure_Size, Figure_Size))
                 photo = ImageTk.PhotoImage(image)
 
                 f.write("{}\t\t\t\t".format(image_filename))
@@ -265,7 +267,7 @@ class ImagePickerApp:
                 if i < 2: #len(self.selected_images_Boss)
                     image_filename = os.path.join(self.image_folder_G1, self.selected_images_G.pop())
                     image = Image.open(image_filename)
-                    image = image.resize((220, 220))
+                    image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
                     f.write("{}\t\t\t\t".format(image_filename))
@@ -284,7 +286,7 @@ class ImagePickerApp:
                 if i < 2: #len(self.selected_images_Boss)
                     image_filename = os.path.join(self.image_folder_G2, self.selected_images_G.pop())
                     image = Image.open(image_filename)
-                    image = image.resize((220, 220))
+                    image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
                     f.write("{}\t\t\t\t".format(image_filename))
@@ -303,7 +305,7 @@ class ImagePickerApp:
                 if i < 2: #len(self.selected_images_Boss)
                     image_filename = os.path.join(self.image_folder_G3, self.selected_images_G.pop())
                     image = Image.open(image_filename)
-                    image = image.resize((220, 220))
+                    image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
                     f.write("{}\t\t\t\t".format(image_filename))
@@ -322,7 +324,7 @@ class ImagePickerApp:
                 if i < 2: #len(self.selected_images_Boss)
                     image_filename = os.path.join(self.image_folder_G4, self.selected_images_G.pop())
                     image = Image.open(image_filename)
-                    image = image.resize((220, 220))
+                    image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
                     f.write("{}\t\t\t\t".format(image_filename))
@@ -341,7 +343,7 @@ class ImagePickerApp:
                 if i < 2: #len(self.selected_images_Boss)
                     image_filename = os.path.join(self.image_folder_G5, self.selected_images_G.pop())
                     image = Image.open(image_filename)
-                    image = image.resize((220, 220))
+                    image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
                     f.write("{}\t\t\t\t".format(image_filename))
@@ -362,7 +364,7 @@ class ImagePickerApp:
             if i < 2: #len(self.selected_images_Boss)
                 image_filename = os.path.join(self.image_folder_Common, self.selected_images_Common.pop())
                 image = Image.open(image_filename)
-                image = image.resize((220, 220))
+                image = image.resize((Figure_Size, Figure_Size))
                 photo = ImageTk.PhotoImage(image)
 
                 f.write("{}\t\t\t\t".format(image_filename))
