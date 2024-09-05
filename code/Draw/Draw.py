@@ -147,6 +147,9 @@ class ImagePickerApp:
         #     self.image_card_labels_2_Boss.append(image_card_label_Boss)
         # row_idx = row_idx + 1
 
+        pick_button_Print = tk.Button(self.root, text="PrintResult", font=("Helvetica", 20), command=self.PrintOutput)
+        pick_button_Print.grid(row = row_idx, column = column_idx-3, ipady=5)
+
         board_label = tk.Label(root, text="Player:", font=("Helvetica", 20), bg=self.bg)
         board_label.grid(row = row_idx, column = column_idx-2)
 
@@ -467,6 +470,73 @@ class ImagePickerApp:
         pygame.mixer.music.load(".\\backgroundmusic.wav")  # 替換成你的音樂文件的路徑
         pygame.mixer.music.play(-1)
 
+    def PrintOutput(self):
+        fA.close()
+        fB.close()
+        # 創建並顯示 Log Viewer 窗口
+        log_viewer_root = tk.Toplevel(self.root)
+        log_viewer = LogViewer(log_viewer_root, filenameA, filenameB)
+
+class LogViewer:
+    def __init__(self, root, filenameA, filenameB):
+        self.root = root
+        self.root.title("Team Viewer")
+        self.root.geometry("600x900")
+
+        # 配置 grid 的行列权重
+        self.root.grid_rowconfigure(0, weight=1)  # 让第一行可扩展
+        self.root.grid_columnconfigure(0, weight=1)  # 让第一列可扩展
+        self.root.grid_columnconfigure(1, weight=1)  # 让第二列可扩展
+
+        # 创建 A 的 Text
+        self.text_area_A = tk.Text(self.root, wrap=tk.WORD, font=("Helvetica", 20))
+        self.text_area_A.grid(row=0, column=0, sticky="nsew")  # 使其填满单元格
+
+        # 创建 B 的 Text
+        self.text_area_B = tk.Text(self.root, wrap=tk.WORD, font=("Helvetica", 20))
+        self.text_area_B.grid(row=0, column=1, sticky="nsew")  # 使其填满单元格
+
+        self.filenameA = filenameA
+        self.filenameB = filenameB
+
+        self.update_logs()
+
+    def update_logs(self):
+
+        if os.path.exists(self.filenameA):
+            fileA = open(self.filenameA, "r")
+            first = True
+            try:
+                for line in fileA:
+                    if (first == True):
+                        self.text_area_A.insert(tk.END, line)
+                        first = False
+                    else:
+                        # 先按反斜杠分割，然后按点分割
+                        nameA = line.split('\\')[-1].split('.')
+                        resultA = nameA[0]
+                        print(resultA)
+                        self.text_area_A.insert(tk.END, resultA + '\n')
+            finally:
+                fileA.close()  # 确保文件在使用完后被关闭
+
+        if os.path.exists(self.filenameB):
+            fileB = open(self.filenameB, "r")
+            first = True
+            try:
+                for line in fileB:
+                    if (first == True):
+                        self.text_area_B.insert(tk.END, line)
+                        first = False
+                    else:
+                        # 先按反斜杠分割，然后按点分割
+                        nameB = line.split('\\')[-1].split('.')
+                        resultB = nameB[0]
+                        print(resultB)
+                        self.text_area_B.insert(tk.END, resultB + '\n')
+            finally:
+                fileB.close()  # 确保文件在使用完后被关闭
+
 if __name__ == "__main__":
 
     fA = None
@@ -493,6 +563,7 @@ if __name__ == "__main__":
     image_folder_path_Common = ".\\Common"
     root = tk.Tk()
     app = ImagePickerApp(root, image_folder_path_Boss, image_folder_path_G0, image_folder_path_G1, image_folder_path_G2, image_folder_path_G3, image_folder_path_G4, image_folder_path_G5, image_folder_path_G6, image_folder_path_Common)
+
     root.mainloop()
 
     fA.close()
