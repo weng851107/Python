@@ -5,20 +5,23 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import pygame
 
+WA_G0_OneTime = True
 WA_G1_OneTime = True
 WA_G2_OneTime = True
 WA_G3_OneTime = True
 WA_G4_OneTime = True
+WA_G5_OneTime = True
+WA_G6_OneTime = True
 
-Figure_Size = 280
+Figure_Size = 450
 
 filename = "Team.log"
 
 class ImagePickerApp:
-    def __init__(self, root, image_folder_Boss, image_folder_G1, image_folder_G2, image_folder_G3, image_folder_G4, image_folder_G5, image_folder_Common):
+    def __init__(self, root, image_folder_Boss, image_folder_G0, image_folder_G1, image_folder_G2, image_folder_G3, image_folder_G4, image_folder_G5, image_folder_G6, image_folder_Common):
         self.root = root
-        w=1400  #width
-        r=850  #height
+        w=1450  #width
+        r=750  #height
         x=80  #與視窗左上x的距離
         y=120  #與視窗左上y的距離
         self.root.geometry('%dx%d+%d+%d' % (w,r,x,y))
@@ -26,35 +29,44 @@ class ImagePickerApp:
         self.bg = "#FFE5B5"
         self.root.configure(bg=self.bg)  # 可以直接打顏色名稱或是找色碼表的代號(https://www.wibibi.com/info.php?tid=372)
 
-        self.image_folder_Boss = image_folder_Boss
+        # self.image_folder_Boss = image_folder_Boss
+        self.image_folder_G0 = image_folder_G0
         self.image_folder_G1 = image_folder_G1
         self.image_folder_G2 = image_folder_G2
         self.image_folder_G3 = image_folder_G3
         self.image_folder_G4 = image_folder_G4
         self.image_folder_G5 = image_folder_G5
+        self.image_folder_G6 = image_folder_G6
         self.image_folder_Common = image_folder_Common
-        self.image_list_Boss = self.get_image_list(image_folder_Boss)
+        # self.image_list_Boss = self.get_image_list(image_folder_Boss)
+        self.image_list_G0 = self.get_image_list(image_folder_G0)
         self.image_list_G1 = self.get_image_list(image_folder_G1)
         self.image_list_G2 = self.get_image_list(image_folder_G2)
         self.image_list_G3 = self.get_image_list(image_folder_G3)
         self.image_list_G4 = self.get_image_list(image_folder_G4)
         self.image_list_G5 = self.get_image_list(image_folder_G5)
+        self.image_list_G6 = self.get_image_list(image_folder_G6)
         self.image_list_Common = self.get_image_list(image_folder_Common)
 
-        self.selected_images_Boss = set()
-        self.selected_G_Idx = 1
+        # self.selected_images_Boss = set()
+        self.selected_G_Idx = 0
         self.selected_images_G = set()
+        self.selected_images_G0 = set()
+        self.selected_images_G1 = set()
         self.selected_images_G2 = set()
         self.selected_images_G3 = set()
         self.selected_images_G4 = set()
         self.selected_images_G5 = set()
+        self.selected_images_G6 = set()
         self.selected_images_Common = set()
-        self.already_selected_images_Boss = set()
+        # self.already_selected_images_Boss = set()
+        self.already_selected_images_G0 = set()
         self.already_selected_images_G1 = set()
         self.already_selected_images_G2 = set()
         self.already_selected_images_G3 = set()
         self.already_selected_images_G4 = set()
         self.already_selected_images_G5 = set()
+        self.already_selected_images_G6 = set()
         self.already_selected_images_Common = set()
 
         ## print info
@@ -68,17 +80,17 @@ class ImagePickerApp:
 
     def reset(self):
         image_reset = "reset.PNG"
-        for i, image_card_label in enumerate(self.image_card_labels_2_Boss):
-            if i < 2:
-                image = Image.open(image_reset)
-                image = image.resize((Figure_Size, Figure_Size))
-                photo = ImageTk.PhotoImage(image)
+        # for i, image_card_label in enumerate(self.image_card_labels_2_Boss):
+        #     if i < 2:
+        #         image = Image.open(image_reset)
+        #         image = image.resize((Figure_Size, Figure_Size))
+        #         photo = ImageTk.PhotoImage(image)
 
-                image_card_label.configure(image=photo)
-                image_card_label.image = photo
-            else:
-                # If fewer than 2 images are available, clear the remaining labels
-                image_card_label.configure(image=None)
+        #         image_card_label.configure(image=photo)
+        #         image_card_label.image = photo
+        #     else:
+        #         # If fewer than 2 images are available, clear the remaining labels
+        #         image_card_label.configure(image=None)
         for i, image_card_label in enumerate(self.image_card_labels_2):
             if i < 2:
                 image = Image.open(image_reset)
@@ -103,36 +115,36 @@ class ImagePickerApp:
         column_idx = 0
 
         self.image_phison_label = tk.Label(self.root)
-        self.image_phison_label.grid(row = row_idx, column = 0, columnspan = 3)
+        self.image_phison_label.grid(row = row_idx, column = 0, columnspan = 2)
 
-        title_label = tk.Label(root, text="群聯選秀抽籤大會", font=("Helvetica", 72), bg=self.bg)
-        title_label.grid(row = row_idx, column = 3, columnspan = 3)
+        title_label = tk.Label(root, text="群聯選秀大會", font=("Helvetica", 72), bg=self.bg)
+        title_label.grid(row = row_idx, column = 2, columnspan = 2)
         row_idx = row_idx + 1
 
-        pick_button_Boss = tk.Button(self.root, text="Captain", font=("Helvetica", 20), command=self.pick_images_Boss)
-        pick_button_Boss.grid(row = row_idx, column = column_idx, ipady=5)
-        column_idx = column_idx + 1
+        # pick_button_Boss = tk.Button(self.root, text="Captain", font=("Helvetica", 20), command=self.pick_images_Boss)
+        # pick_button_Boss.grid(row = row_idx, column = column_idx, ipady=5)
+        # column_idx = column_idx + 1
         pick_button_G = tk.Button(self.root, text="第一輪選秀", font=("Helvetica", 20), command=self.pick_images_G)
         pick_button_G.grid(row = row_idx, column = column_idx, ipady=5)
         column_idx = column_idx + 1
         pick_button_Common = tk.Button(self.root, text="第二輪選秀", font=("Helvetica", 20), command=self.pick_images_Common)
         pick_button_Common.grid(row = row_idx, column = column_idx, ipady=5)
         column_idx = column_idx + 1
-        one_label = tk.Label(root, text="A:福利熊", font=("Helvetica", 30), bg=self.bg)
+        one_label = tk.Label(root, text="Red Team", font=("Helvetica", 30), bg=self.bg)
         one_label.grid(row = row_idx, column = column_idx)
         column_idx = column_idx + 1
-        two_label = tk.Label(root, text="B:收營員", font=("Helvetica", 30), bg=self.bg)
+        two_label = tk.Label(root, text="Blue Team", font=("Helvetica", 30), bg=self.bg)
         two_label.grid(row = row_idx, column = column_idx)
         row_idx = row_idx + 1
 
-        board_label_Boss = tk.Label(root, text="Captain:", font=("Helvetica", 20), bg=self.bg)
-        board_label_Boss.grid(row = row_idx, column = column_idx-2)
+        # board_label_Boss = tk.Label(root, text="Captain:", font=("Helvetica", 20), bg=self.bg)
+        # board_label_Boss.grid(row = row_idx, column = column_idx-2)
 
-        for i in range(2):
-            image_card_label_Boss = tk.Label(self.root)
-            image_card_label_Boss.grid(row = row_idx, column = (column_idx-2)+i+1)
-            self.image_card_labels_2_Boss.append(image_card_label_Boss)
-        row_idx = row_idx + 1
+        # for i in range(2):
+        #     image_card_label_Boss = tk.Label(self.root)
+        #     image_card_label_Boss.grid(row = row_idx, column = (column_idx-2)+i+1)
+        #     self.image_card_labels_2_Boss.append(image_card_label_Boss)
+        # row_idx = row_idx + 1
 
         board_label = tk.Label(root, text="Player:", font=("Helvetica", 20), bg=self.bg)
         board_label.grid(row = row_idx, column = column_idx-2)
@@ -178,7 +190,16 @@ class ImagePickerApp:
 
         # Pick 2 unique random images
         while len(self.selected_images_G) < 2:
-            if (self.selected_G_Idx == 1):
+            if (self.selected_G_Idx == 0):
+                if len(self.image_list_G0) == len(self.already_selected_images_G0):
+                    if (WA_G0_OneTime == False):
+                        self.selected_G_Idx = self.selected_G_Idx + 1
+                    break
+                random_image = random.choice(self.image_list_G0)
+                if random_image not in self.already_selected_images_G0:
+                    self.selected_images_G.add(random_image)
+                    self.already_selected_images_G0.add(random_image)
+            elif (self.selected_G_Idx == 1):
                 if len(self.image_list_G1) == len(self.already_selected_images_G1):
                     if (WA_G1_OneTime == False):
                         self.selected_G_Idx = self.selected_G_Idx + 1
@@ -222,10 +243,19 @@ class ImagePickerApp:
                 if random_image not in self.already_selected_images_G5:
                     self.selected_images_G.add(random_image)
                     self.already_selected_images_G5.add(random_image)
+            elif (self.selected_G_Idx == 6):
+                if len(self.image_list_G6) == len(self.already_selected_images_G6):
+                    self.selected_G_Idx = self.selected_G_Idx + 1
+                    break
+                random_image = random.choice(self.image_list_G6)
+                if random_image not in self.already_selected_images_G6:
+                    self.selected_images_G.add(random_image)
+                    self.already_selected_images_G6.add(random_image)
             else:
                 break
 
         # Display selected images
+        self.reset()
         self.display_images_G()
 
     def pick_images_Common(self):
@@ -242,6 +272,7 @@ class ImagePickerApp:
                 self.already_selected_images_Common.add(random_image)    
 
         # Display selected images
+        self.reset()
         self.display_images_Common()
 
     def display_images_Boss(self):
@@ -262,7 +293,26 @@ class ImagePickerApp:
         f.write("\n")
 
     def display_images_G(self):
-        if (self.selected_G_Idx == 1):
+        if (self.selected_G_Idx == 0):
+            for i, image_card_label in enumerate(self.image_card_labels_2):
+                if i < 2: #len(self.selected_images_Boss)
+                    image_filename = os.path.join(self.image_folder_G0, self.selected_images_G.pop())
+                    image = Image.open(image_filename)
+                    image = image.resize((Figure_Size, Figure_Size))
+                    photo = ImageTk.PhotoImage(image)
+
+                    f.write("{}\t\t\t\t".format(image_filename))
+
+                    image_card_label.configure(image=photo)
+                    image_card_label.image = photo
+                else:
+                    # If fewer than 5 images are available, clear the remaining labels
+                    image_card_label.configure(image=None)
+            if (WA_G0_OneTime == True):
+                self.selected_G_Idx = self.selected_G_Idx + 1
+            f.write("\n")
+
+        elif (self.selected_G_Idx == 1):
             for i, image_card_label in enumerate(self.image_card_labels_2):
                 if i < 2: #len(self.selected_images_Boss)
                     image_filename = os.path.join(self.image_folder_G1, self.selected_images_G.pop())
@@ -353,6 +403,27 @@ class ImagePickerApp:
                 else:
                     # If fewer than 5 images are available, clear the remaining labels
                     image_card_label.configure(image=None)
+            if (WA_G5_OneTime == True):
+                self.selected_G_Idx = self.selected_G_Idx + 1
+            f.write("\n")
+
+        elif (self.selected_G_Idx == 6):
+            for i, image_card_label in enumerate(self.image_card_labels_2):
+                if i < 2: #len(self.selected_images_Boss)
+                    image_filename = os.path.join(self.image_folder_G6, self.selected_images_G.pop())
+                    image = Image.open(image_filename)
+                    image = image.resize((Figure_Size, Figure_Size))
+                    photo = ImageTk.PhotoImage(image)
+
+                    f.write("{}\t\t\t\t".format(image_filename))
+
+                    image_card_label.configure(image=photo)
+                    image_card_label.image = photo
+                else:
+                    # If fewer than 5 images are available, clear the remaining labels
+                    image_card_label.configure(image=None)
+            if (WA_G6_OneTime == True):
+                self.selected_G_Idx = self.selected_G_Idx + 1
             f.write("\n")
 
         else:
@@ -393,14 +464,16 @@ if __name__ == "__main__":
     pygame.init()
     pygame.mixer.init()
     image_folder_path_Boss = ".\\Boss"
+    image_folder_path_G0 = ".\\G0"
     image_folder_path_G1 = ".\\G1"
     image_folder_path_G2 = ".\\G2"
     image_folder_path_G3 = ".\\G3"
     image_folder_path_G4 = ".\\G4"
     image_folder_path_G5 = ".\\G5"
+    image_folder_path_G6 = ".\\G6"
     image_folder_path_Common = ".\\Common"
     root = tk.Tk()
-    app = ImagePickerApp(root, image_folder_path_Boss, image_folder_path_G1, image_folder_path_G2, image_folder_path_G3, image_folder_path_G4, image_folder_path_G5, image_folder_path_Common)
+    app = ImagePickerApp(root, image_folder_path_Boss, image_folder_path_G0, image_folder_path_G1, image_folder_path_G2, image_folder_path_G3, image_folder_path_G4, image_folder_path_G5, image_folder_path_G6, image_folder_path_Common)
     root.mainloop()
 
     f.close()
