@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['D:\\alton_weng\\Desktop\\Temp\\Python\\code\\Draw\\Draw.py'],
+    ['Draw.py'],
     pathex=[],
     binaries=[],
     datas=[],

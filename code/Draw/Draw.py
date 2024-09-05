@@ -15,7 +15,8 @@ WA_G6_OneTime = True
 
 Figure_Size = 450
 
-filename = "Team.log"
+filenameA = "RedTeam.log"
+filenameB = "BlueTeam.log"
 
 class ImagePickerApp:
     def __init__(self, root, image_folder_Boss, image_folder_G0, image_folder_G1, image_folder_G2, image_folder_G3, image_folder_G4, image_folder_G5, image_folder_G6, image_folder_Common):
@@ -283,14 +284,14 @@ class ImagePickerApp:
                 image = image.resize((Figure_Size, Figure_Size))
                 photo = ImageTk.PhotoImage(image)
 
-                f.write("{}\t\t\t\t".format(image_filename))
+                # f.write("{}\t\t\t\t".format(image_filename))
 
                 image_card_label.configure(image=photo)
                 image_card_label.image = photo
             else:
                 # If fewer than 5 images are available, clear the remaining labels
                 image_card_label.configure(image=None)
-        f.write("\n")
+        # f.write("\n")
 
     def display_images_G(self):
         if (self.selected_G_Idx == 0):
@@ -300,8 +301,10 @@ class ImagePickerApp:
                     image = Image.open(image_filename)
                     image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
-
-                    f.write("{}\t\t\t\t".format(image_filename))
+                    if i == 0:
+                        fA.write("{}\n".format(image_filename))
+                    elif i == 1:
+                        fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -310,7 +313,6 @@ class ImagePickerApp:
                     image_card_label.configure(image=None)
             if (WA_G0_OneTime == True):
                 self.selected_G_Idx = self.selected_G_Idx + 1
-            f.write("\n")
 
         elif (self.selected_G_Idx == 1):
             for i, image_card_label in enumerate(self.image_card_labels_2):
@@ -320,7 +322,10 @@ class ImagePickerApp:
                     image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
-                    f.write("{}\t\t\t\t".format(image_filename))
+                    if i == 0:
+                        fA.write("{}\n".format(image_filename))
+                    elif i == 1:
+                        fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -329,7 +334,6 @@ class ImagePickerApp:
                     image_card_label.configure(image=None)
             if (WA_G1_OneTime == True):
                 self.selected_G_Idx = self.selected_G_Idx + 1
-            f.write("\n")
 
         elif (self.selected_G_Idx == 2):
             for i, image_card_label in enumerate(self.image_card_labels_2):
@@ -339,7 +343,10 @@ class ImagePickerApp:
                     image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
-                    f.write("{}\t\t\t\t".format(image_filename))
+                    if i == 0:
+                        fA.write("{}\n".format(image_filename))
+                    elif i == 1:
+                        fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -348,7 +355,6 @@ class ImagePickerApp:
                     image_card_label.configure(image=None)
             if (WA_G2_OneTime == True):
                 self.selected_G_Idx = self.selected_G_Idx + 1
-            f.write("\n")
 
         elif (self.selected_G_Idx == 3):
             for i, image_card_label in enumerate(self.image_card_labels_2):
@@ -358,7 +364,10 @@ class ImagePickerApp:
                     image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
-                    f.write("{}\t\t\t\t".format(image_filename))
+                    if i == 0:
+                        fA.write("{}\n".format(image_filename))
+                    elif i == 1:
+                        fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -367,7 +376,6 @@ class ImagePickerApp:
                     image_card_label.configure(image=None)
             if (WA_G3_OneTime == True):
                 self.selected_G_Idx = self.selected_G_Idx + 1
-            f.write("\n")
 
         elif (self.selected_G_Idx == 4):
             for i, image_card_label in enumerate(self.image_card_labels_2):
@@ -377,7 +385,10 @@ class ImagePickerApp:
                     image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
-                    f.write("{}\t\t\t\t".format(image_filename))
+                    if i == 0:
+                        fA.write("{}\n".format(image_filename))
+                    elif i == 1:
+                        fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -386,7 +397,6 @@ class ImagePickerApp:
                     image_card_label.configure(image=None)
             if (WA_G4_OneTime == True):
                 self.selected_G_Idx = self.selected_G_Idx + 1
-            f.write("\n")
 
         elif (self.selected_G_Idx == 5):
             for i, image_card_label in enumerate(self.image_card_labels_2):
@@ -396,7 +406,10 @@ class ImagePickerApp:
                     image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
-                    f.write("{}\t\t\t\t".format(image_filename))
+                    if i == 0:
+                        fA.write("{}\n".format(image_filename))
+                    elif i == 1:
+                        fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -405,7 +418,6 @@ class ImagePickerApp:
                     image_card_label.configure(image=None)
             if (WA_G5_OneTime == True):
                 self.selected_G_Idx = self.selected_G_Idx + 1
-            f.write("\n")
 
         elif (self.selected_G_Idx == 6):
             for i, image_card_label in enumerate(self.image_card_labels_2):
@@ -415,7 +427,10 @@ class ImagePickerApp:
                     image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
 
-                    f.write("{}\t\t\t\t".format(image_filename))
+                    if i == 0:
+                        fA.write("{}\n".format(image_filename))
+                    elif i == 1:
+                        fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -424,7 +439,6 @@ class ImagePickerApp:
                     image_card_label.configure(image=None)
             if (WA_G6_OneTime == True):
                 self.selected_G_Idx = self.selected_G_Idx + 1
-            f.write("\n")
 
         else:
             for image_card_label in enumerate(self.image_card_labels_2):
@@ -438,14 +452,16 @@ class ImagePickerApp:
                 image = image.resize((Figure_Size, Figure_Size))
                 photo = ImageTk.PhotoImage(image)
 
-                f.write("{}\t\t\t\t".format(image_filename))
+                if i == 0:
+                    fA.write("{}\n".format(image_filename))
+                elif i == 1:
+                    fB.write("{}\n".format(image_filename))
 
                 image_card_label.configure(image=photo)
                 image_card_label.image = photo
             else:
                 # If fewer than 5 images are available, clear the remaining labels
                 image_card_label.configure(image=None)
-        f.write("\n")
 
     def play_music(self):
         pygame.mixer.music.load(".\\backgroundmusic.wav")  # 替換成你的音樂文件的路徑
@@ -453,13 +469,16 @@ class ImagePickerApp:
 
 if __name__ == "__main__":
 
-    f = None
-    if os.path.exists(filename):
+    fA = None
+    fB = None
+    if os.path.exists(filenameA) or os.path.exists(filenameB):
         print("File already exists, please check it")
         exit()
     else:
-        f = open(filename, "w")
-        f.write("A\t\t\t\tB\n")
+        fA = open(filenameA, "w")
+        fB = open(filenameB, "w")
+        fA.write("[Red Team]\n")
+        fB.write("[Blue Team]\n")
 
     pygame.init()
     pygame.mixer.init()
@@ -476,4 +495,5 @@ if __name__ == "__main__":
     app = ImagePickerApp(root, image_folder_path_Boss, image_folder_path_G0, image_folder_path_G1, image_folder_path_G2, image_folder_path_G3, image_folder_path_G4, image_folder_path_G5, image_folder_path_G6, image_folder_path_Common)
     root.mainloop()
 
-    f.close()
+    fA.close()
+    fB.close()
