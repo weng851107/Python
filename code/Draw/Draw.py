@@ -19,7 +19,7 @@ filenameA = "RedTeam.log"
 filenameB = "BlueTeam.log"
 
 class ImagePickerApp:
-    def __init__(self, root, image_folder_Boss, image_folder_G0, image_folder_G1, image_folder_G2, image_folder_G3, image_folder_G4, image_folder_G5, image_folder_G6, image_folder_Common):
+    def __init__(self, root, fA, fB, image_folder_Boss, image_folder_G0, image_folder_G1, image_folder_G2, image_folder_G3, image_folder_G4, image_folder_G5, image_folder_G6, image_folder_Common):
         self.root = root
         w=1450  #width
         r=750  #height
@@ -29,6 +29,13 @@ class ImagePickerApp:
         self.root.title("[Phison] Draw")
         self.bg = "#FFE5B5"
         self.root.configure(bg=self.bg)  # 可以直接打顏色名稱或是找色碼表的代號(https://www.wibibi.com/info.php?tid=372)
+
+        self.fA = open(filenameA, "w")
+        self.fB = open(filenameB, "w")
+        self.fA.write("[Red Team]\n")
+        self.fB.write("[Blue Team]\n")
+        self.fA.close()
+        self.fB.close()
 
         # self.image_folder_Boss = image_folder_Boss
         self.image_folder_G0 = image_folder_G0
@@ -297,6 +304,8 @@ class ImagePickerApp:
         # f.write("\n")
 
     def display_images_G(self):
+        self.fA = open(filenameA, "a")
+        self.fB = open(filenameB, "a")
         if (self.selected_G_Idx == 0):
             for i, image_card_label in enumerate(self.image_card_labels_2):
                 if i < 2: #len(self.selected_images_Boss)
@@ -305,9 +314,9 @@ class ImagePickerApp:
                     image = image.resize((Figure_Size, Figure_Size))
                     photo = ImageTk.PhotoImage(image)
                     if i == 0:
-                        fA.write("{}\n".format(image_filename))
+                        self.fA.write("{}\n".format(image_filename))
                     elif i == 1:
-                        fB.write("{}\n".format(image_filename))
+                        self.fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -326,9 +335,9 @@ class ImagePickerApp:
                     photo = ImageTk.PhotoImage(image)
 
                     if i == 0:
-                        fA.write("{}\n".format(image_filename))
+                        self.fA.write("{}\n".format(image_filename))
                     elif i == 1:
-                        fB.write("{}\n".format(image_filename))
+                        self.fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -347,9 +356,9 @@ class ImagePickerApp:
                     photo = ImageTk.PhotoImage(image)
 
                     if i == 0:
-                        fA.write("{}\n".format(image_filename))
+                        self.fA.write("{}\n".format(image_filename))
                     elif i == 1:
-                        fB.write("{}\n".format(image_filename))
+                        self.fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -368,9 +377,9 @@ class ImagePickerApp:
                     photo = ImageTk.PhotoImage(image)
 
                     if i == 0:
-                        fA.write("{}\n".format(image_filename))
+                        self.fA.write("{}\n".format(image_filename))
                     elif i == 1:
-                        fB.write("{}\n".format(image_filename))
+                        self.fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -389,9 +398,9 @@ class ImagePickerApp:
                     photo = ImageTk.PhotoImage(image)
 
                     if i == 0:
-                        fA.write("{}\n".format(image_filename))
+                        self.fA.write("{}\n".format(image_filename))
                     elif i == 1:
-                        fB.write("{}\n".format(image_filename))
+                        self.fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -410,9 +419,9 @@ class ImagePickerApp:
                     photo = ImageTk.PhotoImage(image)
 
                     if i == 0:
-                        fA.write("{}\n".format(image_filename))
+                        self.fA.write("{}\n".format(image_filename))
                     elif i == 1:
-                        fB.write("{}\n".format(image_filename))
+                        self.fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -431,9 +440,9 @@ class ImagePickerApp:
                     photo = ImageTk.PhotoImage(image)
 
                     if i == 0:
-                        fA.write("{}\n".format(image_filename))
+                        self.fA.write("{}\n".format(image_filename))
                     elif i == 1:
-                        fB.write("{}\n".format(image_filename))
+                        self.fB.write("{}\n".format(image_filename))
 
                     image_card_label.configure(image=photo)
                     image_card_label.image = photo
@@ -447,7 +456,13 @@ class ImagePickerApp:
             for image_card_label in enumerate(self.image_card_labels_2):
                 image_card_label.configure(image=None)
 
+        self.fA.close()
+        self.fB.close()
+
     def display_images_Common(self):
+        self.fA = open(filenameA, "a")
+        self.fB = open(filenameB, "a")
+        odd_flag = True if (len(self.selected_images_Common) == 1) else False
         for i, image_card_label in enumerate(self.image_card_labels_2):
             if i < 2: #len(self.selected_images_Boss)
                 image_filename = os.path.join(self.image_folder_Common, self.selected_images_Common.pop())
@@ -456,9 +471,9 @@ class ImagePickerApp:
                 photo = ImageTk.PhotoImage(image)
 
                 if i == 0:
-                    fA.write("{}\n".format(image_filename))
+                    self.fA.write("{}\n".format(image_filename))
                 elif i == 1:
-                    fB.write("{}\n".format(image_filename))
+                    self.fB.write("{}\n".format(image_filename))
 
                 image_card_label.configure(image=photo)
                 image_card_label.image = photo
@@ -466,13 +481,20 @@ class ImagePickerApp:
                 # If fewer than 5 images are available, clear the remaining labels
                 image_card_label.configure(image=None)
 
+        if (odd_flag == True):
+            image_filename = "reset.PNG"
+            image = Image.open(image_filename)
+            image = image.resize((Figure_Size, Figure_Size))
+            self.fB.write("{}\n".format(image_filename))
+
+        self.fA.close()
+        self.fB.close()
+
     def play_music(self):
         pygame.mixer.music.load(".\\backgroundmusic.wav")  # 替換成你的音樂文件的路徑
         pygame.mixer.music.play(-1)
 
     def PrintOutput(self):
-        fA.close()
-        fB.close()
         # 創建並顯示 Log Viewer 窗口
         log_viewer_root = tk.Toplevel(self.root)
         log_viewer = LogViewer(log_viewer_root, filenameA, filenameB)
@@ -502,6 +524,15 @@ class LogViewer:
         self.update_logs()
 
     def update_logs(self):
+
+        try:
+            self.fA.close()
+            self.fB.close()
+        except:
+            print("Force clese filename fA and fB")
+
+        self.text_area_A.delete(1.0, tk.END)
+        self.text_area_B.delete(1.0, tk.END)
 
         if os.path.exists(self.filenameA):
             fileA = open(self.filenameA, "r")
@@ -537,18 +568,14 @@ class LogViewer:
             finally:
                 fileB.close()  # 确保文件在使用完后被关闭
 
+        # 設置定時器每隔1000毫秒（1秒）更新一次
+        self.root.after(1000, self.update_logs)
+
 if __name__ == "__main__":
 
-    fA = None
-    fB = None
     if os.path.exists(filenameA) or os.path.exists(filenameB):
         print("File already exists, please check it")
         exit()
-    else:
-        fA = open(filenameA, "w")
-        fB = open(filenameB, "w")
-        fA.write("[Red Team]\n")
-        fB.write("[Blue Team]\n")
 
     pygame.init()
     pygame.mixer.init()
@@ -562,9 +589,6 @@ if __name__ == "__main__":
     image_folder_path_G6 = ".\\G6"
     image_folder_path_Common = ".\\Common"
     root = tk.Tk()
-    app = ImagePickerApp(root, image_folder_path_Boss, image_folder_path_G0, image_folder_path_G1, image_folder_path_G2, image_folder_path_G3, image_folder_path_G4, image_folder_path_G5, image_folder_path_G6, image_folder_path_Common)
+    app = ImagePickerApp(root, filenameA, filenameB, image_folder_path_Boss, image_folder_path_G0, image_folder_path_G1, image_folder_path_G2, image_folder_path_G3, image_folder_path_G4, image_folder_path_G5, image_folder_path_G6, image_folder_path_Common)
 
     root.mainloop()
-
-    fA.close()
-    fB.close()
